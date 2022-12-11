@@ -1,4 +1,5 @@
-import { Lang } from './AppState';
+import { Lang } from 'redux/features/appState/initialState';
+
 export type Size = 'XXS' | 'XS' | 'S' | 'M' | 'L';
 export type Color =
   | 'beige'
@@ -46,6 +47,7 @@ export type Product = {
   novelty: boolean;
   bestseller: boolean;
   inSale: boolean;
+  raiting: number;
 } & {
   [Key in Lang]: Description;
 };

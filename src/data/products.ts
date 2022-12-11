@@ -10,6 +10,7 @@ export const products: Product[] = [
     bestseller: true,
     novelty: true,
     inSale: false,
+    raiting: 5,
     ru: {
       title: 'Куртка утепленная',
       description: `Женская зимняя куртка, которая непременно станет 
@@ -62,6 +63,7 @@ export const products: Product[] = [
     bestseller: false,
     novelty: false,
     inSale: true,
+    raiting: 3,
     ru: {
       title: 'Пуховик ультралегкий',
       description: `Ультралегкая пуховая куртка изготовлена из натурального пуха 
@@ -112,6 +114,7 @@ export const products: Product[] = [
     bestseller: false,
     novelty: false,
     inSale: true,
+    raiting: 7,
     ru: {
       title: 'Куртка утепленная',
       description: `Куртка двухсторонняя выполнена из ветро и водонепроницаемого 
@@ -158,6 +161,7 @@ export const products: Product[] = [
     bestseller: true,
     novelty: true,
     inSale: false,
+    raiting: 9,
     ru: {
       title: 'Куртка утепленная',
       description: `Куртка выполнена из стеганого текстиля с искусственным утеплителем. 
@@ -204,6 +208,7 @@ export const products: Product[] = [
     bestseller: false,
     novelty: false,
     inSale: true,
+    raiting: 2,
     ru: {
       title: 'Пуховик',
       description: `Пуховик выполнен из стеганого текстиля. Модель прямого кроя. 
@@ -250,6 +255,7 @@ export const products: Product[] = [
     bestseller: true,
     novelty: true,
     inSale: false,
+    raiting: 10,
     ru: {
       title: 'Куртка утепленная',
       description: `Женская зимняя куртка, которая непременно станет 
@@ -302,6 +308,7 @@ export const products: Product[] = [
     bestseller: false,
     novelty: false,
     inSale: true,
+    raiting: 8,
     ru: {
       title: 'Пуховик ультралегкий',
       description: `Ультралегкая пуховая куртка изготовлена из натурального пуха 
@@ -352,6 +359,7 @@ export const products: Product[] = [
     bestseller: false,
     novelty: false,
     inSale: true,
+    raiting: 5,
     ru: {
       title: 'Куртка утепленная',
       description: `Куртка двухсторонняя выполнена из ветро и водонепроницаемого 
@@ -398,6 +406,7 @@ export const products: Product[] = [
     bestseller: true,
     novelty: true,
     inSale: false,
+    raiting: 3,
     ru: {
       title: 'Куртка утепленная',
       description: `Куртка выполнена из стеганого текстиля с искусственным утеплителем. 
@@ -444,6 +453,7 @@ export const products: Product[] = [
     bestseller: false,
     novelty: false,
     inSale: true,
+    raiting: 8,
     ru: {
       title: 'Пуховик',
       description: `Пуховик выполнен из стеганого текстиля. Модель прямого кроя. 
