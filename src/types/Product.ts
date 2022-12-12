@@ -1,4 +1,4 @@
-import { Lang } from 'redux/features/appState/initialState';
+import { Lang } from './AppState';
 
 export type Size = 'XXS' | 'XS' | 'S' | 'M' | 'L';
 export type Color =

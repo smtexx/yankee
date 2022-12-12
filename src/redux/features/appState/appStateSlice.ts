@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, SoldProduct, User } from 'types';
-import { Currency, initialState, Lang } from './initialState';
+import { Currency, Lang, Product, SoldProduct, User } from 'types';
+import { initialState } from './initialState';
 
 const appStateSlice = createSlice({
   name: '@state',

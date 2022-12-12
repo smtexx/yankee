@@ -1,15 +1,4 @@
-import { Product, SoldProduct, User } from 'types';
-
-export type Lang = 'EN' | 'RU';
-export type Currency = 'USD' | 'EUR' | 'RUB';
-
-export interface AppState {
-  lang: Lang;
-  currency: Currency;
-  user: User | null;
-  cart: SoldProduct[];
-  favorite: Product['id'][];
-}
+import { AppState } from 'types';
 
 export const initialState: AppState = {
   lang: 'EN',

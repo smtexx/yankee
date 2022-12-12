@@ -1,6 +1,6 @@
-import { Product } from 'types';
+import { Product, ProductsData } from 'types';
 
-export const products: Product[] = [
+const products: Product[] = [
   {
     id: '1',
     category: 'jacket',
@@ -11,7 +11,7 @@ export const products: Product[] = [
     novelty: true,
     inSale: false,
     raiting: 5,
-    ru: {
+    RU: {
       title: 'Куртка утепленная',
       description: `Женская зимняя куртка, которая непременно станет 
       любимой верхней одеждой в холодное время года. Укороченная модель 
@@ -32,7 +32,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Insulated jacket',
       description: `Women's winter jacket, which will certainly become your 
       favorite outerwear in the cold season. A shortened model and a 
@@ -64,7 +64,7 @@ export const products: Product[] = [
     novelty: false,
     inSale: true,
     raiting: 3,
-    ru: {
+    RU: {
       title: 'Пуховик ультралегкий',
       description: `Ультралегкая пуховая куртка изготовлена из натурального пуха 
       премиального качества, который удерживает воздух, создавая превосходный 
@@ -84,7 +84,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Ultralight jacket',
       description: `The ultralight down jacket is made of premium quality 
       natural down, which retains air, creating an excellent thermal insulation 
@@ -115,7 +115,7 @@ export const products: Product[] = [
     novelty: false,
     inSale: true,
     raiting: 7,
-    ru: {
+    RU: {
       title: 'Куртка утепленная',
       description: `Куртка двухсторонняя выполнена из ветро и водонепроницаемого 
       текстиля, синтепоновый утеплитель. Детали: прямой крой, застежка на молнию, 
@@ -133,7 +133,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Insulated jacket',
       description: `The double-sided jacket is made of wind and waterproof textiles, 
       sintepon insulation. Details: straight cut, zip closure, side pockets, removable 
@@ -162,7 +162,7 @@ export const products: Product[] = [
     novelty: true,
     inSale: false,
     raiting: 9,
-    ru: {
+    RU: {
       title: 'Куртка утепленная',
       description: `Куртка выполнена из стеганого текстиля с искусственным утеплителем. 
       Модель приталенного укороченного кроя. Детали: двойная застежка на кнопках, 
@@ -180,7 +180,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Insulated jacket',
       description: `The jacket is made of quilted textile with artificial insulation. 
       A model of a fitted cropped cut. Details: double button closure, stand-up 
@@ -209,7 +209,7 @@ export const products: Product[] = [
     novelty: false,
     inSale: true,
     raiting: 2,
-    ru: {
+    RU: {
       title: 'Пуховик',
       description: `Пуховик выполнен из стеганого текстиля. Модель прямого кроя. 
       Детали: фиксированный капюшон, застежка на молнию, прорезные карманы на 
@@ -227,7 +227,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Down Jacket',
       description: `The down jacket is made of quilted textile. Straight cut model. 
       Details: fixed hood, zip closure, welt pockets with buttons, elongated back, 
@@ -256,7 +256,7 @@ export const products: Product[] = [
     novelty: true,
     inSale: false,
     raiting: 10,
-    ru: {
+    RU: {
       title: 'Куртка утепленная',
       description: `Женская зимняя куртка, которая непременно станет 
       любимой верхней одеждой в холодное время года. Укороченная модель 
@@ -277,7 +277,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Insulated jacket',
       description: `Women's winter jacket, which will certainly become your 
       favorite outerwear in the cold season. A shortened model and a 
@@ -309,7 +309,7 @@ export const products: Product[] = [
     novelty: false,
     inSale: true,
     raiting: 8,
-    ru: {
+    RU: {
       title: 'Пуховик ультралегкий',
       description: `Ультралегкая пуховая куртка изготовлена из натурального пуха 
       премиального качества, который удерживает воздух, создавая превосходный 
@@ -329,7 +329,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Ultralight jacket',
       description: `The ultralight down jacket is made of premium quality 
       natural down, which retains air, creating an excellent thermal insulation 
@@ -360,7 +360,7 @@ export const products: Product[] = [
     novelty: false,
     inSale: true,
     raiting: 5,
-    ru: {
+    RU: {
       title: 'Куртка утепленная',
       description: `Куртка двухсторонняя выполнена из ветро и водонепроницаемого 
       текстиля, синтепоновый утеплитель. Детали: прямой крой, застежка на молнию, 
@@ -378,7 +378,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Insulated jacket',
       description: `The double-sided jacket is made of wind and waterproof textiles, 
       sintepon insulation. Details: straight cut, zip closure, side pockets, removable 
@@ -407,7 +407,7 @@ export const products: Product[] = [
     novelty: true,
     inSale: false,
     raiting: 3,
-    ru: {
+    RU: {
       title: 'Куртка утепленная',
       description: `Куртка выполнена из стеганого текстиля с искусственным утеплителем. 
       Модель приталенного укороченного кроя. Детали: двойная застежка на кнопках, 
@@ -425,7 +425,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Insulated jacket',
       description: `The jacket is made of quilted textile with artificial insulation. 
       A model of a fitted cropped cut. Details: double button closure, stand-up 
@@ -454,7 +454,7 @@ export const products: Product[] = [
     novelty: false,
     inSale: true,
     raiting: 8,
-    ru: {
+    RU: {
       title: 'Пуховик',
       description: `Пуховик выполнен из стеганого текстиля. Модель прямого кроя. 
       Детали: фиксированный капюшон, застежка на молнию, прорезные карманы на 
@@ -472,7 +472,7 @@ export const products: Product[] = [
         ],
       },
     },
-    en: {
+    EN: {
       title: 'Down Jacket',
       description: `The down jacket is made of quilted textile. Straight cut model. 
       Details: fixed hood, zip closure, welt pockets with buttons, elongated back, 
@@ -492,3 +492,15 @@ export const products: Product[] = [
     },
   },
 ];
+
+function createProductData(products: Product[]): ProductsData {
+  const productsData: ProductsData = { array: products, ids: {} };
+
+  products.forEach(
+    (product) => (productsData.ids[product.id] = product)
+  );
+
+  return productsData;
+}
+
+export const productsData = createProductData(products);

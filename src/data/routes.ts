@@ -1,19 +1,15 @@
-import { Route } from 'types';
-
-interface Routes {
-  [key: string]: Route;
-}
+import { Routes } from 'types';
 
 export const routes: Routes = {
   root: {
     path: '/',
     protected: false,
-    ru: {
+    RU: {
       title: 'YANKEE - купить одежду из новой коллекции',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'YANKEE - Buy clothes from the new collection',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -22,12 +18,12 @@ export const routes: Routes = {
   catalog: {
     path: 'catalog',
     protected: false,
-    ru: {
+    RU: {
       title: 'Каталог одежы YANKEE',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'YANKEE clothing catalog',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -35,12 +31,12 @@ export const routes: Routes = {
     child: {
       path: ':categoryID',
       protected: false,
-      ru: {
+      RU: {
         title: '{Category title}',
         description:
           'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
       },
-      en: {
+      EN: {
         title: '{Category title}',
         description:
           'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -48,12 +44,12 @@ export const routes: Routes = {
       child: {
         path: ':productID',
         protected: false,
-        ru: {
+        RU: {
           title: '{Product title}',
           description:
             'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
         },
-        en: {
+        EN: {
           title: '{Product title}',
           description:
             'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -64,12 +60,12 @@ export const routes: Routes = {
   refund: {
     path: 'refund',
     protected: false,
-    ru: {
+    RU: {
       title: 'Обмен и возврат товара',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'Exchange and return of goods',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -78,12 +74,12 @@ export const routes: Routes = {
   payment: {
     path: 'payment',
     protected: false,
-    ru: {
+    RU: {
       title: 'Оплата и доставка товара',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'Payment and delivery of goods',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -92,12 +88,12 @@ export const routes: Routes = {
   cart: {
     path: 'cart',
     protected: true,
-    ru: {
+    RU: {
       title: 'Корзина покупок',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'Shopping cart',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -106,12 +102,12 @@ export const routes: Routes = {
   favorite: {
     path: 'favorite',
     protected: true,
-    ru: {
+    RU: {
       title: 'Избранное',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'Favourites',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -120,12 +116,12 @@ export const routes: Routes = {
   contacts: {
     path: 'contacts',
     protected: false,
-    ru: {
+    RU: {
       title: 'Контактные данные',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'Contacts',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
@@ -134,12 +130,12 @@ export const routes: Routes = {
   history: {
     path: 'history',
     protected: true,
-    ru: {
+    RU: {
       title: 'История покупок',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
-    en: {
+    EN: {
       title: 'Shopping history',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
-import { Color, Size } from 'types';
-import { initialState, PriceRange, SortBy } from './initialState';
+import { Color, PriceRange, Size, SortBy } from 'types';
+import { initialState } from './initialState';
 
 const appDataSlice = createSlice({
   name: '@state',
