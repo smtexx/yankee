@@ -51,3 +51,11 @@ export type Product = {
 } & {
   [Key in Lang]: Description;
 };
+
+export interface SoldProduct {
+  id: Product['id'];
+  price: Product['price'];
+  size: Size;
+  color: Color;
+  quantity: number;
+}
