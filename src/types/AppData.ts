@@ -1,7 +1,7 @@
 import { Color, Product, Size } from './Product';
 
 export type SortBy = 'PRICE_UP' | 'PRICE_DOWN' | 'RAITING';
-export type PriceRange = [number | null, number | null];
+export type PriceRange = [number, number];
 
 export interface AppData {
   products: ProductsData;
