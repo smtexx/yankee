@@ -1,6 +1,6 @@
 import { Product, User } from 'types';
 
-export type Lang = 'en' | 'ru';
+export type Lang = 'EN' | 'RU';
 export type Currency = 'USD' | 'EUR' | 'RUB';
 
 export interface AppState {
@@ -12,7 +12,7 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-  lang: 'en',
+  lang: 'EN',
   currency: 'USD',
   user: null,
   cart: [],

@@ -1,7 +1,7 @@
 import { products } from 'data/products';
 import { Color, Product, Size } from 'types';
 export type Price = number | null;
-export type SortBy = 'price_UP' | 'price_DOWN' | 'raiting';
+export type SortBy = 'PRICE_UP' | 'PRICE_DOWN' | 'RAITING';
 
 export interface AppData {
   products: Product[];
@@ -19,6 +19,6 @@ export const initialState: AppData = {
     color: null,
     price: [null, null],
     size: null,
-    sortBy: 'raiting',
+    sortBy: 'RAITING',
   },
 };
