@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Currency, Lang, Product, SoldProduct, User } from 'types';
+import {
+  Currency,
+  Lang,
+  Order,
+  Product,
+  SoldProduct,
+  User,
+} from 'types';
 import { initialState } from './initialState';
 
 const appStateSlice = createSlice({
@@ -21,6 +28,11 @@ const appStateSlice = createSlice({
     addToFavorite(state, action: PayloadAction<Product['id']>) {
       state.favorite.push(action.payload);
     },
+    addOrderToHistory(state, action: PayloadAction<Order>) {
+      if (state.user) {
+        state.user.history.push(action.payload);
+      }
+    },
   },
 });
 
@@ -31,4 +43,5 @@ export const {
   setCurrency,
   setLang,
   setUser,
+  addOrderToHistory,
 } = appStateSlice.actions;
