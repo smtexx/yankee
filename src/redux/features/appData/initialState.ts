@@ -1,13 +1,16 @@
 import { products } from 'data/products';
 import { Color, Product, Size } from 'types';
-export type Price = number | null;
+
 export type SortBy = 'PRICE_UP' | 'PRICE_DOWN' | 'RAITING';
+
+type Price = number | null;
+export type PriceRange = [Price, Price];
 
 export interface AppData {
   products: Product[];
   filters: {
     color: Color | null;
-    price: [Price, Price];
+    price: PriceRange;
     size: Size | null;
     sortBy: SortBy;
   };
