@@ -8,7 +8,7 @@ export type Feature = keyof Pick<
   'inSale' | 'new' | 'bestseller'
 >;
 export type StoragedUser = RegisteredUser & {
-  passBase64: string;
+  password: string;
   login: string;
 };
 export type ExchangeRate = {

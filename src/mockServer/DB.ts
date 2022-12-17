@@ -73,7 +73,7 @@ export class DB {
   createUser(
     newUser: UnregisteredUser,
     login: string,
-    passBase64: string
+    password: string
   ): StoragedUser {
     if (this.getUser(login)) {
       throw new DataBaseError('User already exist in DB');
@@ -84,7 +84,7 @@ export class DB {
       favorites: [],
       orders: history,
       login,
-      passBase64,
+      password,
     };
 
     this.saveUser(storagedUser);
@@ -110,7 +110,7 @@ export class DB {
   }
   changePassword(login: string, password: string): void {
     const user = this.getUser(login);
-    user.passBase64 = password;
+    user.password = password;
     this.saveUser(user);
   }
 
