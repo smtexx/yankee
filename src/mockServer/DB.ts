@@ -11,7 +11,7 @@ import {
 import { history } from './history';
 import { products } from './products';
 
-class DB {
+export class DB {
   protected storage: {
     products: Product[];
     entries: {
@@ -35,25 +35,15 @@ class DB {
     );
   }
 
-  private static getUserStorageKey(email: string) {
-    return `user__${email}`;
+  private static getUserStorageKey(login: string) {
+    return `user__${login}`;
   }
-  private static encodeUser(user: StoragedUser): string {
-    return JSON.stringify(user);
-  }
-  private static decodeUser(user: string): StoragedUser {
-    return JSON.parse(user, (key, value) => {
-      if (key === 'date' && value !== '' && value !== null) {
-        return new Date(value);
-      }
-      return value;
-    });
-  }
+
   private saveUser(user: StoragedUser): void {
     try {
       localStorage.setItem(
-        DB.getUserStorageKey(user.email),
-        DB.encodeUser(user)
+        DB.getUserStorageKey(user.login),
+        JSON.stringify(user)
       );
     } catch (error) {
       throw new DataBaseError(
@@ -82,9 +72,10 @@ class DB {
   // User
   createUser(
     newUser: UnregisteredUser,
+    login: string,
     passBase64: string
   ): StoragedUser {
-    if (this.getUser(newUser.email)) {
+    if (this.getUser(login)) {
       throw new DataBaseError('User already exist in DB');
     }
 
@@ -92,23 +83,24 @@ class DB {
       ...newUser,
       favorites: [],
       orders: history,
+      login,
       passBase64,
     };
 
     this.saveUser(storagedUser);
     return storagedUser;
   }
-  getUser(email: string): StoragedUser {
-    const storageKey = DB.getUserStorageKey(email);
+  getUser(login: string): StoragedUser {
+    const storageKey = DB.getUserStorageKey(login);
     const userJSON = localStorage.getItem(storageKey);
     if (userJSON) {
-      return DB.decodeUser(userJSON);
+      return JSON.parse(userJSON);
     } else {
-      throw new DataBaseError(`User "${email}" not found in DB`);
+      throw new DataBaseError(`User "${login}" not found in DB`);
     }
   }
-  updateUser(user: UnregisteredUser): StoragedUser {
-    const oldUser = this.getUser(user.email);
+  updateUser(login: string, user: UnregisteredUser): StoragedUser {
+    const oldUser = this.getUser(login);
     const updatedUser: StoragedUser = {
       ...oldUser,
       ...user,
@@ -116,18 +108,18 @@ class DB {
     this.saveUser(updatedUser);
     return updatedUser;
   }
-  changePassword(email: string, password: string): void {
-    const user = this.getUser(email);
+  changePassword(login: string, password: string): void {
+    const user = this.getUser(login);
     user.passBase64 = password;
     this.saveUser(user);
   }
 
   // Order
   addOrder(
-    email: string,
+    login: string,
     order: UnregisteredOrder
   ): RegisteredOrder[] {
-    const user = this.getUser(email);
+    const user = this.getUser(login);
     const registeredOrder: RegisteredOrder = {
       ...order,
       id: Math.ceil(Math.random() * 1000).toString(),
@@ -138,28 +130,28 @@ class DB {
     this.saveUser(user);
     return user.orders;
   }
-  getOrders(email: string): RegisteredOrder[] {
-    return this.getUser(email).orders;
+  getOrders(login: string): RegisteredOrder[] {
+    return this.getUser(login).orders;
   }
 
   // Favorite
   addToFavorite(
-    email: string,
+    login: string,
     productID: Product['id']
   ): Product['id'][] {
-    const user = this.getUser(email);
+    const user = this.getUser(login);
     user.favorites.push(productID);
     this.saveUser(user);
     return user.favorites;
   }
-  getFavorites(email: string): Product['id'][] {
-    return this.getUser(email).favorites;
+  getFavorites(login: string): Product['id'][] {
+    return this.getUser(login).favorites;
   }
   deleteFromFavorite(
-    email: string,
+    login: string,
     productID: Product['id']
   ): Product['id'][] {
-    const user = this.getUser(email);
+    const user = this.getUser(login);
     user.favorites = user.favorites.filter((id) => id !== productID);
     this.saveUser(user);
     return user.favorites;
