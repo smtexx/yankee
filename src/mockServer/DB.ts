@@ -8,6 +8,7 @@ import {
   UnregisteredOrder,
   UnregisteredUser,
 } from 'types';
+import { history } from './history';
 import { products } from './products';
 
 class DB {
@@ -90,7 +91,7 @@ class DB {
     const storagedUser: StoragedUser = {
       ...newUser,
       favorites: [],
-      orders: [],
+      orders: history,
       passBase64,
     };
 
