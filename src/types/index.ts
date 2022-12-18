@@ -5,3 +5,4 @@ export * from './Order';
 export * from './AppData';
 export * from './AppState';
 export * from './DB';
+export * from './Server';
