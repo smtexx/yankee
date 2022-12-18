@@ -1,11 +1,17 @@
-import { Order } from './Order';
+import { RegisteredOrder } from './Order';
+import { Product } from './Product';
 
-export interface User {
+export interface UnregisteredUser {
   firstname: string;
   lastname: string;
   email: string;
   phone: string;
   address: string;
-  passwordHash: string;
-  history: Order[];
+}
+
+export interface RegisteredUser extends UnregisteredUser {
+  orders: RegisteredOrder[];
+  favorites: Product['id'][];
+  login?: null;
+  password?: null;
 }
