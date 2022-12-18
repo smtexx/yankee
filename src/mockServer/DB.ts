@@ -8,9 +8,9 @@ import {
   UnregisteredOrder,
   UnregisteredUser,
 } from 'types';
-import { history } from './history';
-import { products } from './products';
-import { rates } from './exchangeRates';
+import { history } from './initialData/history';
+import { products } from './initialData/products';
+import { rates } from './initialData/exchangeRates';
 
 export class DB {
   protected storage: {

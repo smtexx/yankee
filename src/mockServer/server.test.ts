@@ -5,7 +5,7 @@ import {
   StatusCode,
   UnregisteredUser,
 } from 'types';
-import { products } from './products';
+import { products } from './initialData/products';
 import { mockFetch } from './server';
 
 function getUrl(...arg: string[]): string {
