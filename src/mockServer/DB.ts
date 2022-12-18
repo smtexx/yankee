@@ -71,6 +71,11 @@ export class DB {
   }
 
   // User
+  hasUser(login: string): boolean {
+    return localStorage.getItem(DB.getUserStorageKey(login))
+      ? true
+      : false;
+  }
   createUser(
     login: string,
     password: string,
