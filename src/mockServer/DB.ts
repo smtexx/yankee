@@ -10,6 +10,7 @@ import {
 } from 'types';
 import { history } from './history';
 import { products } from './products';
+import { rates } from './exchangeRates';
 
 export class DB {
   protected storage: {
@@ -18,12 +19,9 @@ export class DB {
       [key: string]: Product;
     };
   };
+
   protected subscribeList: string[] = [];
-  protected exchangeRate: ExchangeRate = {
-    USD: 1,
-    EUR: 1.06,
-    RUB: 64.5,
-  };
+  protected exchangeRate = rates;
 
   constructor(products: Product[]) {
     this.storage = {
@@ -59,6 +57,9 @@ export class DB {
     );
   }
   getProductsByCategory(category: Category): Product[] {
+    if (category === 'all') {
+      return this.storage.products;
+    }
     return this.storage.products.filter(
       (product) => product.category === category
     );
@@ -71,9 +72,9 @@ export class DB {
 
   // User
   createUser(
-    newUser: UnregisteredUser,
     login: string,
-    password: string
+    password: string,
+    newUser: UnregisteredUser
   ): StoragedUser {
     if (this.getUser(login)) {
       throw new DataBaseError('User already exist in DB');
@@ -108,9 +109,9 @@ export class DB {
     this.saveUser(updatedUser);
     return updatedUser;
   }
-  changePassword(login: string, password: string): void {
+  changePassword(login: string, newPassword: string): void {
     const user = this.getUser(login);
-    user.password = password;
+    user.password = newPassword;
     this.saveUser(user);
   }
 
