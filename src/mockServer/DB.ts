@@ -81,8 +81,8 @@ export class DB {
     password: string,
     newUser: UnregisteredUser
   ): StoragedUser {
-    if (this.getUser(login)) {
-      throw new DataBaseError('User already exist in DB');
+    if (this.hasUser(login)) {
+      throw new DataBaseError(`User ${login} already exist in DB`);
     }
 
     const storagedUser: StoragedUser = {
