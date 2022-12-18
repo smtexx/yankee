@@ -15,6 +15,7 @@ export type Color =
   | 'brown';
 
 export type Category =
+  | 'all'
   | 'jacket'
   | 'fur'
   | 'trench'
@@ -44,18 +45,21 @@ export type Product = {
   price: number;
   size: Size[];
   colors: Color[];
-  novelty: boolean;
+  new: boolean;
   bestseller: boolean;
   inSale: boolean;
   raiting: number;
 } & {
-  [Key in Lang]: Description;
+  [key in Lang]: Description;
 };
 
-export interface SoldProduct {
+export type SoldProduct = {
   id: Product['id'];
+
   price: Product['price'];
   size: Size;
   color: Color;
   quantity: number;
-}
+} & {
+  [key in Lang]: string;
+};
