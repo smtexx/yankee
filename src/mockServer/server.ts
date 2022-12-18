@@ -165,7 +165,7 @@ class Server {
           ]);
 
         // Check if already exist
-        if (this.db.getUser(login)) {
+        if (this.db.hasUser(login)) {
           throw new ServerError(
             'This login is already taken',
             StatusCode.BAD_REQUEST
