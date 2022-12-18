@@ -2,13 +2,17 @@ import { createSelector } from '@reduxjs/toolkit';
 import { Product } from 'types';
 import { RootState } from './store';
 
+// Language and currency
 export const selectLang = (state: RootState) => state.values.lang;
-export const selectCart = (state: RootState) => state.values.cart;
-export const selectCurrentUser = (state: RootState) =>
-  state.values.user;
 export const selectCurrency = (state: RootState) =>
   state.values.currency;
 
+// User and cart
+export const selectCurrentUser = (state: RootState) =>
+  state.values.user;
+export const selectCart = (state: RootState) => state.values.cart;
+
+// Filters
 export const selectColorFilter = (state: RootState) =>
   state.data.filters.color;
 export const selectPriceFilter = (state: RootState) =>
@@ -18,28 +22,51 @@ export const selectSizeFilter = (state: RootState) =>
 export const selectSortByFilter = (state: RootState) =>
   state.data.filters.sortBy;
 
-export const selectProducts = createSelector(
+// Products
+export const selectAllProducts = (state: RootState) =>
+  state.data.products.array;
+
+export const selectProductByID = (
+  state: RootState,
+  id: Product['id']
+) => state.data.products.ids[id];
+
+const selectFilteredProducts = createSelector(
   selectColorFilter,
   selectPriceFilter,
   selectSizeFilter,
-  selectSortByFilter,
-  (state: RootState) => state.data.products.array,
-  (color, price, size, sortBy, products) => {
-    const filtered: Product[] = products.filter((product) => {
-      const checks: boolean[] = [];
+  selectAllProducts,
+  (color, price, size, products) => {
+    let filteredProducts: Product[] = products;
 
-      if (color) {
-        checks.push(product.colors.includes(color));
-      }
-      if (size) {
-        checks.push(product.size.includes(size));
-      }
-      checks.push(
-        price[0] < product.price || price[1] > product.price
+    if (color) {
+      filteredProducts = products.filter((product) =>
+        product.colors.includes(color)
       );
+    }
 
-      return checks.includes(false);
-    });
+    if (size) {
+      filteredProducts = filteredProducts.filter((product) =>
+        product.size.includes(size)
+      );
+    }
+
+    if (price[0] !== 0 || price[1] !== Infinity) {
+      filteredProducts = filteredProducts.filter(
+        (product) =>
+          product.price > price[0] && product.price < price[1]
+      );
+    }
+
+    return filteredProducts;
+  }
+);
+
+export const selectProducts = createSelector(
+  selectSortByFilter,
+  selectFilteredProducts,
+  (sortBy, products) => {
+    const sortedProducts: Product[] = [...products];
 
     let sortFunc: (a: Product, b: Product) => number;
 
@@ -55,7 +82,7 @@ export const selectProducts = createSelector(
         break;
     }
 
-    return filtered.sort(sortFunc);
+    return sortedProducts.sort(sortFunc);
   }
 );
 
@@ -65,3 +92,16 @@ export const selectFavorites = createSelector(
   (ids, products) =>
     ids.map((id) => products.find((product) => product.id === id))
 );
+
+// Бестселлеры, распрадажа, новинки
+export const selectBestsellers = createSelector(
+  selectAllProducts,
+  (products) => products.filter((product) => product.bestseller)
+);
+
+export const selectSalesProducts = createSelector(
+  selectAllProducts,
+  (prducts) => prducts.filter((product) => product.inSale)
+);
+
+export const selectNovelties = createSelector(selectAllProducts);
