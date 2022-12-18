@@ -5,6 +5,7 @@ import {
   StatusCode,
   UnregisteredUser,
 } from 'types';
+import { history } from './initialData/history';
 import { products } from './initialData/products';
 import { mockFetch } from './server';
 
@@ -23,7 +24,9 @@ const unregisteredUser: UnregisteredUser = {
 const registeredUser: RegisteredUser = {
   ...unregisteredUser,
   favorites: [],
-  orders: [],
+  orders: history,
+  login: null,
+  password: null,
 };
 
 global.localStorage = {
@@ -178,7 +181,7 @@ global.localStorage = {
 // });
 
 describe('Work with user:', () => {
-  test('Create new user', async () => {
+  test('Create new user returns registered user', async () => {
     const response = await mockFetch(getUrl(Path.user), {
       method: Method.PUT,
       headers: {
