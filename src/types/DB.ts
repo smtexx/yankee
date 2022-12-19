@@ -6,10 +6,7 @@ export type Feature = keyof Pick<
   Product,
   'inSale' | 'new' | 'bestseller'
 >;
-export type StoragedUser = Omit<
-  RegisteredUser,
-  'login' | 'password'
-> & {
+export type StoragedUser = RegisteredUser & {
   password: string;
   login: string;
 };

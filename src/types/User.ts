@@ -12,6 +12,4 @@ export interface UnregisteredUser {
 export interface RegisteredUser extends UnregisteredUser {
   orders: RegisteredOrder[];
   favorites: Product['id'][];
-  login?: null;
-  password?: null;
 }

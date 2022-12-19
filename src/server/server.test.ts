@@ -27,8 +27,6 @@ const registeredUser: RegisteredUser = {
   ...unregisteredUser,
   favorites: [],
   orders: history,
-  login: null,
-  password: null,
 };
 
 const login = 'Roman';
