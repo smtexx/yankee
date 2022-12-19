@@ -1,7 +1,6 @@
 import {
   Method,
   Path,
-  RegisteredOrder,
   RegisteredUser,
   StatusCode,
   UnregisteredOrder,
@@ -9,6 +8,7 @@ import {
 } from 'types';
 import { history } from './initialData/history';
 import { products } from './initialData/products';
+import { rates } from './initialData/exchangeRates';
 import { mockFetch } from './server';
 
 function getUrl(...arg: string[]): string {
@@ -48,133 +48,133 @@ function resetStorage() {
 
 resetStorage();
 
-// describe('Get products:', () => {
-//   test('Get products by "all" category', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.category, 'all')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual(products);
-//   });
+describe('Get products:', () => {
+  test('Get products by "all" category', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.category, 'all')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(products);
+  });
 
-//   test('Get products by "jacket" category', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.category, 'jacket')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual(products);
-//   });
+  test('Get products by "jacket" category', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.category, 'jacket')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(products);
+  });
 
-//   test('Get products by "coat" category', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.category, 'coat')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual([]);
-//   });
+  test('Get products by "coat" category', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.category, 'coat')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual([]);
+  });
 
-//   test('Get products by "unknown" category', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.category, 'unknown')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual([]);
-//   });
+  test('Get products by "unknown" category', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.category, 'unknown')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual([]);
+  });
 
-//   test('Get products by "bestseller" feature', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.feature, 'bestseller')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual(products.filter((p) => p.bestseller));
-//   });
+  test('Get products by "bestseller" feature', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.feature, 'bestseller')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(products.filter((p) => p.bestseller));
+  });
 
-//   test('Get products by "new" feature', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.feature, 'new')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual(products.filter((p) => p.new));
-//   });
+  test('Get products by "new" feature', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.feature, 'new')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(products.filter((p) => p.new));
+  });
 
-//   test('Get products by "inSale" feature', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.feature, 'inSale')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual(products.filter((p) => p.inSale));
-//   });
+  test('Get products by "inSale" feature', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.feature, 'inSale')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(products.filter((p) => p.inSale));
+  });
 
-//   test('Get products by "unknown" feature', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.feature, 'unknown')
-//     );
-//     expect(response.ok).toBe(true);
-//     expect(response.status).toBe(StatusCode.OK);
-//     let data;
-//     if (response.ok) {
-//       data = await response.json();
-//     }
-//     expect(data).toEqual([]);
-//   });
+  test('Get products by "unknown" feature', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.feature, 'unknown')
+    );
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual([]);
+  });
 
-//   test('Send wrong request to /products/feature', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.feature)
-//     );
-//     expect(response.ok).toBe(false);
-//     expect(response.status).toBe(StatusCode.BAD_REQUEST);
-//   });
+  test('Send wrong request to /products/feature', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.feature)
+    );
+    expect(response.ok).toBe(false);
+    expect(response.status).toBe(StatusCode.BAD_REQUEST);
+  });
 
-//   test('Send wrong request to /products/category', async () => {
-//     const response = await mockFetch(
-//       getUrl(Path.products, Path.category)
-//     );
-//     expect(response.ok).toBe(false);
-//     expect(response.status).toBe(StatusCode.BAD_REQUEST);
-//   });
+  test('Send wrong request to /products/category', async () => {
+    const response = await mockFetch(
+      getUrl(Path.products, Path.category)
+    );
+    expect(response.ok).toBe(false);
+    expect(response.status).toBe(StatusCode.BAD_REQUEST);
+  });
 
-//   test('Send wrong request to /products', async () => {
-//     const response = await mockFetch(getUrl(Path.products));
-//     expect(response.ok).toBe(false);
-//     expect(response.status).toBe(StatusCode.BAD_REQUEST);
-//   });
-// });
+  test('Send wrong request to /products', async () => {
+    const response = await mockFetch(getUrl(Path.products));
+    expect(response.ok).toBe(false);
+    expect(response.status).toBe(StatusCode.BAD_REQUEST);
+  });
+});
 
 describe('Work with user:', () => {
   test('Create new user', async () => {
@@ -325,5 +325,181 @@ describe('Work with user:', () => {
     expect(registeredOrder).toEqual(newOrder);
 
     resetStorage();
+  });
+
+  test('Get user orders', async () => {
+    const response = await mockFetch(getUrl(Path.user, Path.orders), {
+      method: Method.GET,
+      headers: {
+        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+      },
+      body: '',
+    });
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(registeredUser.orders);
+
+    resetStorage();
+  });
+
+  test('Add product to favorites', async () => {
+    const response = await mockFetch(
+      getUrl(Path.user, Path.favorites, '4'),
+      {
+        method: Method.GET,
+        headers: {
+          Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+        },
+        body: '',
+      }
+    );
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(['4']);
+
+    resetStorage();
+  });
+
+  test('Get user favorite products', async () => {
+    const favorites = ['4', '6', '7'];
+    registeredUser.favorites = favorites;
+    resetStorage();
+
+    const response = await mockFetch(
+      getUrl(Path.user, Path.favorites),
+      {
+        method: Method.GET,
+        headers: {
+          Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+        },
+        body: '',
+      }
+    );
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(favorites);
+
+    registeredUser.favorites = [];
+    resetStorage();
+  });
+
+  test('Delete productID from user favorite products', async () => {
+    const favorites = ['4', '6', '7'];
+    registeredUser.favorites = favorites;
+    resetStorage();
+
+    const response = await mockFetch(
+      getUrl(Path.user, Path.favorites, favorites[1]),
+      {
+        method: Method.DELETE,
+        headers: {
+          Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+        },
+        body: '',
+      }
+    );
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(['4', '7']);
+
+    registeredUser.favorites = [];
+    resetStorage();
+  });
+
+  test('Server respons if password is not correct', async () => {
+    const response = await mockFetch(
+      getUrl(Path.user, Path.favorites),
+      {
+        method: Method.GET,
+        headers: {
+          Authorization: `Basic ${btoa(`${login}:wrong_password`)}`,
+        },
+        body: '',
+      }
+    );
+
+    expect(response.ok).toBe(false);
+    expect(response.status).toBe(StatusCode.FORBIDDEN);
+  });
+
+  test('Server respons if login is not correct', async () => {
+    const response = await mockFetch(
+      getUrl(Path.user, Path.favorites),
+      {
+        method: Method.GET,
+        headers: {
+          Authorization: `Basic ${btoa(`wrong_login:${password}`)}`,
+        },
+        body: '',
+      }
+    );
+
+    expect(response.ok).toBe(false);
+    expect(response.status).toBe(StatusCode.FORBIDDEN);
+  });
+
+  test('Server respons if url is not correct', async () => {
+    const response = await mockFetch(getUrl('unknown_url'), {
+      method: Method.GET,
+      headers: {
+        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+      },
+      body: '',
+    });
+
+    expect(response.ok).toBe(false);
+    expect(response.status).toBe(StatusCode.BAD_REQUEST);
+  });
+});
+
+describe('Subscribe user', () => {
+  test('Subscribe user to newsletters', async () => {
+    const response = await mockFetch(getUrl(Path.subscribe), {
+      method: Method.POST,
+      headers: {},
+      body: JSON.stringify({ email: 'smtexx@mail.com' }),
+    });
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.NO_CONTENT);
+  });
+});
+
+describe('Get exchange rates', () => {
+  test('Get exchange rates from server', async () => {
+    const response = await mockFetch(getUrl(Path.exchange));
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(rates);
   });
 });
