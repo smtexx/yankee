@@ -270,7 +270,7 @@ class Server {
         });
       }
 
-      // PUT:/user/order
+      // PUT:/user/orders
       // Create new order
       if (
         paths[0] === Path.user &&
@@ -289,13 +289,10 @@ class Server {
         this.checkAuthData(login, password);
 
         // Add new order to user
-        const registeredOrder = this.db.addOrder(login, body);
+        const userOrders = this.db.addOrder(login, body);
 
         // Send response
-        return this.createResponseOk(
-          StatusCode.CREATED,
-          registeredOrder
-        );
+        return this.createResponseOk(StatusCode.CREATED, userOrders);
       }
 
       // GET:/user/order
