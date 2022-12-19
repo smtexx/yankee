@@ -153,7 +153,11 @@ class Server {
 
       // PUT:/user
       // Create new user
-      if (paths[0] === Path.user && options.method === Method.PUT) {
+      if (
+        paths[0] === Path.user &&
+        !paths[1] &&
+        options.method === Method.PUT
+      ) {
         // Get data from request
         const { login, password, body } =
           this.parseAuthRequestBody<UnregisteredUser>(options, [
@@ -192,7 +196,11 @@ class Server {
 
       // PATCH:/user
       // Update user
-      if (paths[0] === Path.user && options.method === Method.PATCH) {
+      if (
+        paths[0] === Path.user &&
+        !paths[1] &&
+        options.method === Method.PATCH
+      ) {
         // Get data from request
         const { login, password, body } =
           this.parseAuthRequestBody<UnregisteredUser>(options, [
