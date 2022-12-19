@@ -11,7 +11,7 @@ import {
   RegisteredUser,
   UnregisteredOrder,
 } from 'types';
-import { db } from './DB';
+import { DataBaseError, db } from './DB';
 
 class Server {
   constructor(private db: DB, private dataExchangeDelay: number) {}
@@ -80,8 +80,15 @@ class Server {
     login: string,
     password: string
   ): void | never {
-    const user = this.db.getUser(login);
-    if (user.password !== password) {
+    let user;
+    try {
+      user = this.db.getUser(login);
+    } catch (error) {
+      if (error instanceof DataBaseError) {
+        throw new ServerError(error.message, StatusCode.FORBIDDEN);
+      }
+    }
+    if (user?.password !== password) {
       throw new ServerError(
         'Password is not correct',
         StatusCode.FORBIDDEN
@@ -295,7 +302,7 @@ class Server {
         return this.createResponseOk(StatusCode.CREATED, userOrders);
       }
 
-      // GET:/user/order
+      // GET:/user/orders
       // Get user orders
       if (
         paths[0] === Path.user &&

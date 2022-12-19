@@ -178,7 +178,7 @@ export class DB {
   }
 }
 
-class DataBaseError extends Error {
+export class DataBaseError extends Error {
   constructor(message: string) {
     super(`DataBase: ${message}`);
     this.name = 'DataBaseError';
