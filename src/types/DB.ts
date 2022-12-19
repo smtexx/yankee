@@ -1,4 +1,3 @@
-import { db } from 'mockServer/DB';
 import { Currency } from './AppState';
 import { Product } from './Product';
 import { RegisteredUser } from './User';
@@ -17,5 +16,3 @@ export type StoragedUser = Omit<
 export type ExchangeRate = {
   [key in Currency]: number;
 };
-
-export type DB = typeof db;

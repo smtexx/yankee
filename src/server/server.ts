@@ -1,5 +1,4 @@
 import {
-  DB,
   FetchOptions,
   MockResponse,
   StatusCode,
@@ -11,7 +10,7 @@ import {
   RegisteredUser,
   UnregisteredOrder,
 } from 'types';
-import { DataBaseError, db } from './DB';
+import { DataBaseError, db, DB } from './DB';
 
 class Server {
   constructor(private db: DB, private dataExchangeDelay: number) {}
