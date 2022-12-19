@@ -13,5 +13,5 @@ export interface UnregisteredOrder {
 
 export interface RegisteredOrder extends UnregisteredOrder {
   id: string;
-  date: Date;
+  date: string;
 }

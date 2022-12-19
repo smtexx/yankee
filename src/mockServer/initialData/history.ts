@@ -3,7 +3,7 @@ import { RegisteredOrder } from 'types';
 export const history: RegisteredOrder[] = [
   {
     id: '342',
-    date: new Date(2022, 3, 4),
+    date: new Date(2022, 3, 4).toString(),
     payment: 'CASH_ON_DELIVERY',
     status: 'COMPLETED',
     shipping: 'PICKUP',
@@ -30,7 +30,7 @@ export const history: RegisteredOrder[] = [
   },
   {
     id: '376',
-    date: new Date(2022, 3, 7),
+    date: new Date(2022, 3, 7).toString(),
     payment: 'CARD',
     status: 'CANCELLED',
     shipping: 'POST',

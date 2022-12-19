@@ -129,7 +129,7 @@ export class DB {
     const registeredOrder: RegisteredOrder = {
       ...order,
       id: Math.ceil(Math.random() * 1000).toString(),
-      date: new Date(),
+      date: new Date().toString(),
     };
 
     user.orders.push(registeredOrder);
