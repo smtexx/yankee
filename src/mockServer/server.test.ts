@@ -29,6 +29,9 @@ const registeredUser: RegisteredUser = {
   password: null,
 };
 
+const login = 'Roman';
+let password = 'my_password';
+
 // describe('Get products:', () => {
 //   test('Get products by "all" category', async () => {
 //     const response = await mockFetch(
@@ -162,7 +165,7 @@ describe('Work with user:', () => {
     const response = await mockFetch(getUrl(Path.user), {
       method: Method.PUT,
       headers: {
-        Authorization: `Basic ${btoa('Roman:myPassword')}`,
+        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
       },
       body: JSON.stringify(unregisteredUser),
     });
@@ -176,8 +179,61 @@ describe('Work with user:', () => {
     const user = localStorage.getItem('user__Roman') || '{}';
     expect(JSON.parse(user)).toEqual({
       ...registeredUser,
-      login: 'Roman',
-      password: 'myPassword',
+      login: login,
+      password: password,
     });
+  });
+
+  test('Updates user data', async () => {
+    const updatedUser = {
+      ...unregisteredUser,
+      address: 'Ordynsk',
+      phone: '+7 903 777 7777',
+    };
+
+    const response = await mockFetch(getUrl(Path.user), {
+      method: Method.PATCH,
+      headers: {
+        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+      },
+      body: JSON.stringify(updatedUser),
+    });
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+
+    expect(data).toEqual({
+      ...registeredUser,
+      address: updatedUser.address,
+      phone: updatedUser.phone,
+    });
+  });
+
+  test('Change user password', async () => {
+    const newPassword = 'newPassword';
+
+    const response = await mockFetch(
+      getUrl(Path.user, Path.password),
+      {
+        method: Method.PATCH,
+        headers: {
+          Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+        },
+        body: JSON.stringify({ password: newPassword }),
+      }
+    );
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.NO_CONTENT);
+
+    const userJSON = localStorage.getItem(`user__${login}`) || '{}';
+    expect(JSON.parse(userJSON)?.password).toBe(newPassword);
+
+    password = newPassword;
   });
 });
