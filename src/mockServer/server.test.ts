@@ -1,8 +1,10 @@
 import {
   Method,
   Path,
+  RegisteredOrder,
   RegisteredUser,
   StatusCode,
+  UnregisteredOrder,
   UnregisteredUser,
 } from 'types';
 import { history } from './initialData/history';
@@ -31,6 +33,20 @@ const registeredUser: RegisteredUser = {
 
 const login = 'Roman';
 let password = 'my_password';
+
+function resetStorage() {
+  localStorage.clear();
+  localStorage.setItem(
+    `user__${login}`,
+    JSON.stringify({
+      ...registeredUser,
+      login,
+      password,
+    })
+  );
+}
+
+resetStorage();
 
 // describe('Get products:', () => {
 //   test('Get products by "all" category', async () => {
@@ -162,6 +178,7 @@ let password = 'my_password';
 
 describe('Work with user:', () => {
   test('Create new user', async () => {
+    localStorage.clear();
     const response = await mockFetch(getUrl(Path.user), {
       method: Method.PUT,
       headers: {
@@ -171,17 +188,21 @@ describe('Work with user:', () => {
     });
     expect(response.ok).toBe(true);
     expect(response.status).toBe(StatusCode.CREATED);
+
     let data;
     if (response.ok) {
       data = await response.json();
     }
     expect(data).toEqual(registeredUser);
+
     const user = localStorage.getItem('user__Roman') || '{}';
     expect(JSON.parse(user)).toEqual({
       ...registeredUser,
       login: login,
       password: password,
     });
+
+    resetStorage();
   });
 
   test('Updates user data', async () => {
@@ -206,12 +227,13 @@ describe('Work with user:', () => {
     if (response.ok) {
       data = await response.json();
     }
-
     expect(data).toEqual({
       ...registeredUser,
       address: updatedUser.address,
       phone: updatedUser.phone,
     });
+
+    resetStorage();
   });
 
   test('Change user password', async () => {
@@ -234,6 +256,74 @@ describe('Work with user:', () => {
     const userJSON = localStorage.getItem(`user__${login}`) || '{}';
     expect(JSON.parse(userJSON)?.password).toBe(newPassword);
 
-    password = newPassword;
+    resetStorage();
+  });
+
+  test('User authorization', async () => {
+    const response = await mockFetch(getUrl(Path.user, Path.sign), {
+      method: Method.GET,
+      headers: {
+        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+      },
+      body: '',
+    });
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.OK);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    expect(data).toEqual(registeredUser);
+
+    resetStorage();
+  });
+
+  test('Create new order', async () => {
+    const newOrder: UnregisteredOrder = {
+      payment: 'CARD',
+      status: 'PROCESSING',
+      shipping: 'PICKUP',
+      products: [
+        {
+          id: '10',
+          color: 'gray',
+          price: 64,
+          size: 'XS',
+          quantity: 1,
+          RU: 'Куртка утепленная',
+          EN: 'Insulated jacket',
+        },
+      ],
+    };
+
+    const response = await mockFetch(getUrl(Path.user, Path.orders), {
+      method: Method.PUT,
+      headers: {
+        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
+      },
+      body: JSON.stringify(newOrder),
+    });
+
+    expect(response.ok).toBe(true);
+    expect(response.status).toBe(StatusCode.CREATED);
+
+    let data;
+    if (response.ok) {
+      data = await response.json();
+    }
+    let registeredOrder;
+    if (Array.isArray(data)) {
+      registeredOrder = data[data.length - 1];
+    }
+    expect(typeof registeredOrder?.date).toBe('string');
+    expect(typeof registeredOrder?.id).toBe('string');
+
+    delete registeredOrder?.date;
+    delete registeredOrder?.id;
+    expect(registeredOrder).toEqual(newOrder);
+
+    resetStorage();
   });
 });
