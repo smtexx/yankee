@@ -1,5 +1,5 @@
-import { Product, SoldProduct } from './Product';
-import { User } from './User';
+import { SoldProduct } from './Product';
+import { RegisteredUser } from './User';
 
 export type Lang = 'EN' | 'RU';
 export type Currency = 'USD' | 'EUR' | 'RUB';
@@ -7,7 +7,10 @@ export type Currency = 'USD' | 'EUR' | 'RUB';
 export interface AppState {
   lang: Lang;
   currency: Currency;
-  user: User | null;
+  user: RegisteredUser | null;
   cart: SoldProduct[];
-  favorite: Product['id'][];
+  authData: {
+    login: string;
+    password: string;
+  } | null;
 }
