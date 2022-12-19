@@ -15,7 +15,7 @@ export interface AppData {
 
 export interface ProductsData {
   array: Product[];
-  ids: {
-    [key: string]: Product;
+  entries: {
+    [key: Product['id']]: Product;
   };
 }
