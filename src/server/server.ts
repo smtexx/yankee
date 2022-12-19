@@ -9,6 +9,7 @@ import {
   UnregisteredUser,
   RegisteredUser,
   UnregisteredOrder,
+  StoragedUser,
 } from 'types';
 import { DataBaseError, db, DB } from './DB';
 
@@ -119,6 +120,16 @@ class Server {
     };
   }
 
+  private clearUser(user: StoragedUser): RegisteredUser {
+    const clearedUser: Partial<StoragedUser> = {
+      ...user,
+    };
+    delete clearedUser.login;
+    delete clearedUser.password;
+
+    return clearedUser as RegisteredUser;
+  }
+
   request(
     url: string,
     options: FetchOptions
@@ -192,11 +203,7 @@ class Server {
         // Send response
         return this.createResponseOk<RegisteredUser>(
           StatusCode.CREATED,
-          {
-            ...storagedUser,
-            login: null,
-            password: null,
-          }
+          this.clearUser(storagedUser)
         );
       }
 
@@ -224,11 +231,10 @@ class Server {
         const storagedUser = this.db.updateUser(login, body);
 
         // Send response
-        return this.createResponseOk<RegisteredUser>(StatusCode.OK, {
-          ...storagedUser,
-          login: null,
-          password: null,
-        });
+        return this.createResponseOk<RegisteredUser>(
+          StatusCode.OK,
+          this.clearUser(storagedUser)
+        );
       }
 
       // PATCH:/user/password
@@ -269,11 +275,10 @@ class Server {
         const storagedUser = this.db.getUser(login);
 
         // Send response
-        return this.createResponseOk(StatusCode.OK, {
-          ...storagedUser,
-          login: null,
-          password: null,
-        });
+        return this.createResponseOk(
+          StatusCode.OK,
+          this.clearUser(storagedUser)
+        );
       }
 
       // PUT:/user/orders
