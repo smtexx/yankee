@@ -29,29 +29,6 @@ const registeredUser: RegisteredUser = {
   password: null,
 };
 
-global.localStorage = {
-  error: false,
-  storage: {},
-  length: 0,
-
-  clear() {
-    this.storage = {};
-  },
-  setItem(key, value) {
-    if (this.error) {
-      throw new Error('Unable to store item');
-    }
-    this.storage[key] = value;
-  },
-  getItem(key) {
-    return this.storage[key] || null;
-  },
-  key(index) {
-    return '';
-  },
-  removeItem(key) {},
-};
-
 // describe('Get products:', () => {
 //   test('Get products by "all" category', async () => {
 //     const response = await mockFetch(
@@ -181,7 +158,7 @@ global.localStorage = {
 // });
 
 describe('Work with user:', () => {
-  test('Create new user returns registered user', async () => {
+  test('Create new user', async () => {
     const response = await mockFetch(getUrl(Path.user), {
       method: Method.PUT,
       headers: {
@@ -196,5 +173,11 @@ describe('Work with user:', () => {
       data = await response.json();
     }
     expect(data).toEqual(registeredUser);
+    const user = localStorage.getItem('user__Roman') || '{}';
+    expect(JSON.parse(user)).toEqual({
+      ...registeredUser,
+      login: 'Roman',
+      password: 'myPassword',
+    });
   });
 });
