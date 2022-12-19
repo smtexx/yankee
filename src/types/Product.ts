@@ -55,11 +55,11 @@ export type Product = {
 
 export type SoldProduct = {
   id: Product['id'];
-
   price: Product['price'];
   size: Size;
   color: Color;
   quantity: number;
 } & {
+  // Product title
   [key in Lang]: string;
 };
