@@ -5,5 +5,6 @@ export const initialState: AppState = {
   currency: 'USD',
   user: null,
   cart: [],
-  favorite: [],
+  authData: null,
+  exchangeRates: null,
 };

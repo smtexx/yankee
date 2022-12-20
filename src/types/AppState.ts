@@ -1,3 +1,4 @@
+import { ExchangeRate } from './DB';
 import { SoldProduct } from './Product';
 import { RegisteredUser } from './User';
 
@@ -13,4 +14,5 @@ export interface AppState {
     login: string;
     password: string;
   } | null;
+  exchangeRates: ExchangeRate | null;
 }
