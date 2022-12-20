@@ -31,8 +31,6 @@ export enum Path {
   products = 'products',
   // /products/category
   category = 'category',
-  // /products/feature
-  feature = 'feature',
   // /subscribe
   subscribe = 'subscribe',
   // /exchange

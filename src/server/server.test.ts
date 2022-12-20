@@ -102,7 +102,7 @@ describe('Get products:', () => {
 
   test('Get products by "bestseller" feature', async () => {
     const response = await mockFetch(
-      getUrl(Path.products, Path.feature, 'bestseller')
+      getUrl(Path.products, Path.category, 'bestseller')
     );
     expect(response.ok).toBe(true);
     expect(response.status).toBe(StatusCode.OK);
@@ -115,7 +115,7 @@ describe('Get products:', () => {
 
   test('Get products by "new" feature', async () => {
     const response = await mockFetch(
-      getUrl(Path.products, Path.feature, 'new')
+      getUrl(Path.products, Path.category, 'new')
     );
     expect(response.ok).toBe(true);
     expect(response.status).toBe(StatusCode.OK);
@@ -128,7 +128,7 @@ describe('Get products:', () => {
 
   test('Get products by "inSale" feature', async () => {
     const response = await mockFetch(
-      getUrl(Path.products, Path.feature, 'inSale')
+      getUrl(Path.products, Path.category, 'inSale')
     );
     expect(response.ok).toBe(true);
     expect(response.status).toBe(StatusCode.OK);
@@ -137,27 +137,6 @@ describe('Get products:', () => {
       data = await response.json();
     }
     expect(data).toEqual(products.filter((p) => p.inSale));
-  });
-
-  test('Get products by "unknown" feature', async () => {
-    const response = await mockFetch(
-      getUrl(Path.products, Path.feature, 'unknown')
-    );
-    expect(response.ok).toBe(true);
-    expect(response.status).toBe(StatusCode.OK);
-    let data;
-    if (response.ok) {
-      data = await response.json();
-    }
-    expect(data).toEqual([]);
-  });
-
-  test('Send wrong request to /products/feature', async () => {
-    const response = await mockFetch(
-      getUrl(Path.products, Path.feature)
-    );
-    expect(response.ok).toBe(false);
-    expect(response.status).toBe(StatusCode.BAD_REQUEST);
   });
 
   test('Send wrong request to /products/category', async () => {

@@ -10,6 +10,7 @@ import {
   RegisteredUser,
   UnregisteredOrder,
   StoragedUser,
+  Product,
 } from 'types';
 import { DataBaseError, db, DB } from './DB';
 
@@ -141,31 +142,27 @@ class Server {
         .filter((path) => path !== '');
 
       // GET:/product/category/name
-      // Get products by category
+      // Get products by category or feature
       if (
         paths[0] === Path.products &&
         paths[1] === Path.category &&
         paths[2] &&
         options.method === Method.GET
       ) {
-        return this.createResponseOk(
-          StatusCode.OK,
-          this.db.getProductsByCategory(paths[2] as Category)
-        );
-      }
+        const features: Feature[] = ['bestseller', 'inSale', 'new'];
+        let products: Product[];
 
-      // GET:/products/feature/name
-      // Get products by feature
-      if (
-        paths[0] === Path.products &&
-        paths[1] === Path.feature &&
-        paths[2] &&
-        options.method === Method.GET
-      ) {
-        return this.createResponseOk(
-          StatusCode.OK,
-          this.db.getProductsByFeature(paths[2] as Feature)
-        );
+        if (features.includes(paths[2] as Feature)) {
+          products = this.db.getProductsByFeature(
+            paths[2] as Feature
+          );
+        } else {
+          products = this.db.getProductsByCategory(
+            paths[2] as Category
+          );
+        }
+
+        return this.createResponseOk(StatusCode.OK, products);
       }
 
       // PUT:/user
