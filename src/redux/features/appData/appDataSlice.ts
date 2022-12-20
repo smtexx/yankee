@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
-import { Color, PriceRange, Size, SortBy } from 'types';
+import { Color, PriceRange, Product, Size, SortBy } from 'types';
 import { initialState } from './initialState';
+import { fetchProductsByCategory } from './thunks';
 
 const appDataSlice = createSlice({
-  name: '@state',
+  name: '@data',
   initialState: initialState,
   reducers: {
     setColor(state, action: PayloadAction<Color>) {
@@ -19,6 +20,31 @@ const appDataSlice = createSlice({
     setSortBy(state, action: PayloadAction<SortBy>) {
       state.filters.sortBy = action.payload;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(fetchProductsByCategory.pending, (state) => {
+      state.status = 'LOADING';
+    });
+    builder.addCase(fetchProductsByCategory.rejected, (state) => {
+      state.status = 'ERROR';
+    });
+    builder.addCase(
+      fetchProductsByCategory.fulfilled,
+      (state, action) => {
+        const products: {
+          array: Product[];
+          entries: Record<string, Product>;
+        } = {
+          array: action.payload,
+          entries: {},
+        };
+        products.array.forEach(
+          (product) => (products.entries[product.id] = product)
+        );
+        state.products = products;
+        state.status = 'IDLE';
+      }
+    );
   },
 });
 
