@@ -1,6 +1,7 @@
 import {
   Method,
   Path,
+  Product,
   RegisteredUser,
   StatusCode,
   UnregisteredOrder,
@@ -391,9 +392,9 @@ describe('Work with user:', () => {
 
     let data;
     if (response.ok) {
-      data = await response.json();
+      data = (await response.json()) as Product[];
     }
-    expect(data).toEqual(favorites);
+    expect(data?.map((product) => product?.id)).toEqual(favorites);
 
     registeredUser.favorites = [];
     resetStorage();

@@ -342,8 +342,11 @@ class Server {
         // Get favorites from DB
         const userFavorites = this.db.getFavorites(login);
 
+        // Get corresponding products
+        const products = this.db.getProductsByIDs(userFavorites);
+
         // Send response
-        return this.createResponseOk(StatusCode.OK, userFavorites);
+        return this.createResponseOk(StatusCode.OK, products);
       }
 
       // GET:/user/favorites/productID
