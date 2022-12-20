@@ -2,10 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   Currency,
   Lang,
-  Order,
   Product,
+  RegisteredUser,
   SoldProduct,
-  User,
 } from 'types';
 import { initialState } from './initialState';
 
@@ -19,29 +18,15 @@ const appStateSlice = createSlice({
     setCurrency(state, action: PayloadAction<Currency>) {
       state.currency = action.payload;
     },
-    setUser(state, action: PayloadAction<User>) {
+    setUser(state, action: PayloadAction<RegisteredUser>) {
       state.user = action.payload;
     },
     addToCart(state, action: PayloadAction<SoldProduct>) {
       state.cart.push(action.payload);
     },
-    addToFavorite(state, action: PayloadAction<Product['id']>) {
-      state.favorite.push(action.payload);
-    },
-    addOrderToHistory(state, action: PayloadAction<Order>) {
-      if (state.user) {
-        state.user.history.push(action.payload);
-      }
-    },
   },
 });
 
 export default appStateSlice.reducer;
-export const {
-  addToCart,
-  addToFavorite,
-  setCurrency,
-  setLang,
-  setUser,
-  addOrderToHistory,
-} = appStateSlice.actions;
+export const { addToCart, setCurrency, setLang, setUser } =
+  appStateSlice.actions;
