@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BadResponseError, getUrl } from 'redux/helpers';
 import { mockFetch } from 'server/server';
 import {
+  AppState,
   ExchangeRate,
   Method,
   Path,
@@ -34,20 +35,31 @@ async function sendRequest<T, U>(
 }
 
 export const registerUser = createAsyncThunk<
-  RegisteredUser,
+  {
+    user: RegisteredUser;
+    authData: AppState['authData'];
+  },
   {
     login: string;
     password: string;
     user: UnregisteredUser;
   }
 >('@state/registerUser', async ({ login, password, user }) => {
-  return await sendRequest(
+  const registeredUser = await sendRequest(
     getUrl(Path.user),
     login,
     password,
     Method.PUT,
     user
   );
+
+  return {
+    user: registeredUser as RegisteredUser,
+    authData: {
+      login,
+      password,
+    },
+  };
 });
 
 export const updateUserData = createAsyncThunk<
@@ -68,7 +80,7 @@ export const updateUserData = createAsyncThunk<
 });
 
 export const changePassword = createAsyncThunk<
-  {},
+  string,
   {
     login: string;
     password: string;
@@ -77,30 +89,36 @@ export const changePassword = createAsyncThunk<
 >(
   '@state/changePassword',
   async ({ login, password, newPassword }) => {
-    return await sendRequest(
+    await sendRequest(
       getUrl(Path.user, Path.password),
       login,
       password,
       Method.PATCH,
       { password: newPassword }
     );
+    return newPassword;
   }
 );
 
 export const signIn = createAsyncThunk<
-  RegisteredUser,
+  { user: RegisteredUser; authData: AppState['authData'] },
   {
     login: string;
     password: string;
   }
 >('@state/signIn', async ({ login, password }) => {
-  return await sendRequest(
+  const registeredUser = await sendRequest(
     getUrl(Path.user, Path.sign),
     login,
     password,
     Method.GET,
     {}
   );
+
+  return {
+    user: registeredUser as RegisteredUser,
+    authData: { login, password },
+  };
 });
 
 export const createOrder = createAsyncThunk<
