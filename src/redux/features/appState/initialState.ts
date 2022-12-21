@@ -7,4 +7,5 @@ export const initialState: AppState = {
   cart: [],
   authData: null,
   exchangeRates: null,
+  message: null,
 };
