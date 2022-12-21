@@ -15,4 +15,5 @@ export interface AppState {
     password: string;
   } | null;
   exchangeRates: ExchangeRate | null;
+  message: string | null;
 }
