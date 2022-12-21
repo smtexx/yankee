@@ -7,10 +7,10 @@ import {
   Category,
   Feature,
   UnregisteredUser,
-  RegisteredUser,
   UnregisteredOrder,
-  StoragedUser,
   Product,
+  User_DB,
+  User_Client,
 } from 'types';
 import { DataBaseError, db, DB } from './DB';
 
@@ -45,8 +45,8 @@ class Server {
     );
   }
   private getAuthData(headers: Headers): {
-    login: string;
-    password: string;
+    login: User_DB['login'];
+    password: User_DB['password'];
   } {
     const authHeader = headers.get('Authorization');
     if (authHeader) {
@@ -78,9 +78,9 @@ class Server {
     }
   }
   private checkAuthData(
-    login: string,
-    password: string
-  ): void | never {
+    login: User_DB['login'],
+    password: User_DB['password']
+  ): void {
     let user;
     try {
       user = this.db.getUser(login);
@@ -99,7 +99,11 @@ class Server {
   private parseAuthRequestBody<T>(
     options: FetchOptions,
     config: [string, PropTypes][]
-  ): { login: string; password: string; body: T } {
+  ): {
+    login: User_DB['login'];
+    password: User_DB['password'];
+    body: T;
+  } {
     // Parse auth data
     const authData = this.getAuthData(options.headers);
     // Parse body
@@ -121,14 +125,18 @@ class Server {
     };
   }
 
-  private clearUser(user: StoragedUser): RegisteredUser {
-    const clearedUser: Partial<StoragedUser> = {
+  private convertUser(user: User_DB): User_Client {
+    const interimUser: Partial<User_DB> = {
       ...user,
     };
-    delete clearedUser.login;
-    delete clearedUser.password;
 
-    return clearedUser as RegisteredUser;
+    delete interimUser.login;
+    delete interimUser.password;
+
+    return {
+      ...interimUser,
+      favorites: this.db.getProductsByIDs(user.favorites),
+    } as User_Client;
   }
 
   request(
@@ -198,9 +206,9 @@ class Server {
         );
 
         // Send response
-        return this.createResponseOk<RegisteredUser>(
+        return this.createResponseOk<User_Client>(
           StatusCode.CREATED,
-          this.clearUser(storagedUser)
+          this.convertUser(storagedUser)
         );
       }
 
@@ -228,9 +236,9 @@ class Server {
         const storagedUser = this.db.updateUser(login, body);
 
         // Send response
-        return this.createResponseOk<RegisteredUser>(
+        return this.createResponseOk<User_Client>(
           StatusCode.OK,
-          this.clearUser(storagedUser)
+          this.convertUser(storagedUser)
         );
       }
 
@@ -274,7 +282,7 @@ class Server {
         // Send response
         return this.createResponseOk(
           StatusCode.OK,
-          this.clearUser(storagedUser)
+          this.convertUser(storagedUser)
         );
       }
 
@@ -297,53 +305,13 @@ class Server {
         this.checkAuthData(login, password);
 
         // Add new order to user
-        const userOrders = this.db.addOrder(login, body);
+        const registeredOrder = this.db.addOrder(login, body);
 
         // Send response
-        return this.createResponseOk(StatusCode.CREATED, userOrders);
-      }
-
-      // GET:/user/orders
-      // Get user orders
-      if (
-        paths[0] === Path.user &&
-        paths[1] === Path.orders &&
-        options.method === Method.GET
-      ) {
-        const { login, password } = this.getAuthData(options.headers);
-
-        // Check auth data
-        this.checkAuthData(login, password);
-
-        // Get orders from DB
-        const userOrders = this.db.getOrders(login);
-
-        // Send response
-        return this.createResponseOk(StatusCode.OK, userOrders);
-      }
-
-      // GET:/user/favorites
-      // Get user favorite products
-      if (
-        paths[0] === Path.user &&
-        paths[1] === Path.favorites &&
-        !paths[2] &&
-        options.method === Method.GET
-      ) {
-        // Get auth data
-        const { login, password } = this.getAuthData(options.headers);
-
-        // Check auth data
-        this.checkAuthData(login, password);
-
-        // Get favorites from DB
-        const userFavorites = this.db.getFavorites(login);
-
-        // Get corresponding products
-        const products = this.db.getProductsByIDs(userFavorites);
-
-        // Send response
-        return this.createResponseOk(StatusCode.OK, products);
+        return this.createResponseOk(
+          StatusCode.CREATED,
+          registeredOrder
+        );
       }
 
       // GET:/user/favorites/productID
@@ -361,10 +329,10 @@ class Server {
         this.checkAuthData(login, password);
 
         // Add to favorite
-        const userFavorites = this.db.addToFavorite(login, paths[2]);
+        this.db.addToFavorite(login, paths[2]);
 
         // Send response
-        return this.createResponseOk(StatusCode.OK, userFavorites);
+        return this.createResponseOk(StatusCode.NO_CONTENT, {});
       }
 
       // DELETE:/user/favorites/productID
@@ -382,13 +350,10 @@ class Server {
         this.checkAuthData(login, password);
 
         // Add to favorite
-        const userFavorites = this.db.deleteFromFavorite(
-          login,
-          paths[2]
-        );
+        this.db.deleteFromFavorite(login, paths[2]);
 
         // Send response
-        return this.createResponseOk(StatusCode.OK, userFavorites);
+        return this.createResponseOk(StatusCode.NO_CONTENT, {});
       }
 
       // POST:/subscribe

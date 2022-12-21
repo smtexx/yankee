@@ -1,16 +1,16 @@
 import {
   Method,
   Path,
-  Product,
-  RegisteredUser,
+  RegisteredOrder,
   StatusCode,
   UnregisteredOrder,
   UnregisteredUser,
+  User_Client,
 } from 'types';
 import { history } from './initialData/history';
 import { products } from './initialData/products';
 import { rates } from './initialData/exchangeRates';
-import { mockFetch } from './server';
+import { mockFetch } from './Server';
 
 function getUrl(...arg: string[]): string {
   return `http://localhost:3000/${arg.join('/')}`;
@@ -24,7 +24,7 @@ const unregisteredUser: UnregisteredUser = {
   phone: '+381-62-777-7777',
 };
 
-const registeredUser: RegisteredUser = {
+const registeredUser: User_Client = {
   ...unregisteredUser,
   favorites: [],
   orders: history,
@@ -289,39 +289,11 @@ describe('Work with user:', () => {
 
     let data;
     if (response.ok) {
-      data = await response.json();
+      data = (await response.json()) as RegisteredOrder;
     }
-    let registeredOrder;
-    if (Array.isArray(data)) {
-      registeredOrder = data[data.length - 1];
-    }
-    expect(typeof registeredOrder?.date).toBe('string');
-    expect(typeof registeredOrder?.id).toBe('string');
 
-    delete registeredOrder?.date;
-    delete registeredOrder?.id;
-    expect(registeredOrder).toEqual(newOrder);
-
-    resetStorage();
-  });
-
-  test('Get user orders', async () => {
-    const response = await mockFetch(getUrl(Path.user, Path.orders), {
-      method: Method.GET,
-      headers: {
-        Authorization: `Basic ${btoa(`${login}:${password}`)}`,
-      },
-      body: '',
-    });
-
-    expect(response.ok).toBe(true);
-    expect(response.status).toBe(StatusCode.OK);
-
-    let data;
-    if (response.ok) {
-      data = await response.json();
-    }
-    expect(data).toEqual(registeredUser.orders);
+    expect(typeof data?.date).toBe('string');
+    expect(typeof data?.id).toBe('string');
 
     resetStorage();
   });
@@ -338,54 +310,18 @@ describe('Work with user:', () => {
       }
     );
 
-    expect(response.ok).toBe(true);
-    expect(response.status).toBe(StatusCode.OK);
-
-    let data;
-    if (response.ok) {
-      data = await response.json();
-    }
-    expect(data).toEqual(['4']);
-
-    resetStorage();
-  });
-
-  test('Get user favorite products', async () => {
-    const favorites = ['4', '6', '7'];
-    registeredUser.favorites = favorites;
-    resetStorage();
-
-    const response = await mockFetch(
-      getUrl(Path.user, Path.favorites),
-      {
-        method: Method.GET,
-        headers: {
-          Authorization: `Basic ${btoa(`${login}:${password}`)}`,
-        },
-        body: '',
-      }
-    );
+    const user = localStorage.getItem(`user__${login}`) || '';
 
     expect(response.ok).toBe(true);
-    expect(response.status).toBe(StatusCode.OK);
+    expect(response.status).toBe(StatusCode.NO_CONTENT);
+    expect(JSON.parse(user).favorites).toEqual(['4']);
 
-    let data;
-    if (response.ok) {
-      data = (await response.json()) as Product[];
-    }
-    expect(data?.map((product) => product?.id)).toEqual(favorites);
-
-    registeredUser.favorites = [];
-    resetStorage();
+    // !!! do not resetStorage
   });
 
   test('Delete productID from user favorite products', async () => {
-    const favorites = ['4', '6', '7'];
-    registeredUser.favorites = favorites;
-    resetStorage();
-
     const response = await mockFetch(
-      getUrl(Path.user, Path.favorites, favorites[1]),
+      getUrl(Path.user, Path.favorites, '4'),
       {
         method: Method.DELETE,
         headers: {
@@ -395,22 +331,18 @@ describe('Work with user:', () => {
       }
     );
 
+    const user = localStorage.getItem(`user__${login}`) || '';
+
     expect(response.ok).toBe(true);
-    expect(response.status).toBe(StatusCode.OK);
+    expect(response.status).toBe(StatusCode.NO_CONTENT);
+    expect(JSON.parse(user).favorites).toEqual([]);
 
-    let data;
-    if (response.ok) {
-      data = await response.json();
-    }
-    expect(data).toEqual(['4', '7']);
-
-    registeredUser.favorites = [];
     resetStorage();
   });
 
   test('Server respons if password is not correct', async () => {
     const response = await mockFetch(
-      getUrl(Path.user, Path.favorites),
+      getUrl(Path.user, Path.favorites, '6'),
       {
         method: Method.GET,
         headers: {
@@ -426,7 +358,7 @@ describe('Work with user:', () => {
 
   test('Server respons if login is not correct', async () => {
     const response = await mockFetch(
-      getUrl(Path.user, Path.favorites),
+      getUrl(Path.user, Path.favorites, '3'),
       {
         method: Method.GET,
         headers: {

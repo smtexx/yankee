@@ -9,7 +9,14 @@ export interface UnregisteredUser {
   address: string;
 }
 
-export interface RegisteredUser extends UnregisteredUser {
+export interface User_DB extends UnregisteredUser {
   orders: RegisteredOrder[];
   favorites: Product['id'][];
+  login: string;
+  password: string;
+}
+
+export interface User_Client extends UnregisteredUser {
+  orders: RegisteredOrder[];
+  favorites: Product[];
 }

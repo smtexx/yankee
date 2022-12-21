@@ -4,9 +4,9 @@ import {
   Feature,
   Product,
   RegisteredOrder,
-  StoragedUser,
   UnregisteredOrder,
   UnregisteredUser,
+  User_DB,
 } from 'types';
 import { history } from './initialData/history';
 import { products } from './initialData/products';
@@ -16,12 +16,27 @@ export class DB {
   protected storage: {
     products: Product[];
     entries: {
-      [key: string]: Product;
+      [key: Product['id']]: Product;
     };
   };
-
   protected subscribeList: string[] = [];
   protected exchangeRate = rates;
+
+  private getUserStorageKey(login: User_DB['login']) {
+    return `user__${login}`;
+  }
+  private saveUser(user: User_DB): void {
+    try {
+      localStorage.setItem(
+        this.getUserStorageKey(user.login),
+        JSON.stringify(user)
+      );
+    } catch (error) {
+      throw new DataBaseError(
+        'Unable to save user, check local storage availability'
+      );
+    }
+  }
 
   constructor(products: Product[]) {
     this.storage = {
@@ -31,23 +46,6 @@ export class DB {
     products.forEach(
       (product) => (this.storage.entries[product.id] = product)
     );
-  }
-
-  private static getUserStorageKey(login: string) {
-    return `user__${login}`;
-  }
-
-  private saveUser(user: StoragedUser): void {
-    try {
-      localStorage.setItem(
-        DB.getUserStorageKey(user.login),
-        JSON.stringify(user)
-      );
-    } catch (error) {
-      throw new DataBaseError(
-        'Unable to save user, check local storage availability'
-      );
-    }
   }
 
   // Products
@@ -71,21 +69,21 @@ export class DB {
   }
 
   // User
-  hasUser(login: string): boolean {
-    return localStorage.getItem(DB.getUserStorageKey(login))
+  hasUser(login: User_DB['login']): boolean {
+    return localStorage.getItem(this.getUserStorageKey(login))
       ? true
       : false;
   }
   createUser(
-    login: string,
-    password: string,
+    login: User_DB['login'],
+    password: User_DB['password'],
     newUser: UnregisteredUser
-  ): StoragedUser {
+  ): User_DB {
     if (this.hasUser(login)) {
       throw new DataBaseError(`User ${login} already exist in DB`);
     }
 
-    const storagedUser: StoragedUser = {
+    const storagedUser: User_DB = {
       ...newUser,
       favorites: [],
       orders: history,
@@ -96,8 +94,8 @@ export class DB {
     this.saveUser(storagedUser);
     return storagedUser;
   }
-  getUser(login: string): StoragedUser {
-    const storageKey = DB.getUserStorageKey(login);
+  getUser(login: User_DB['login']): User_DB {
+    const storageKey = this.getUserStorageKey(login);
     const userJSON = localStorage.getItem(storageKey);
     if (userJSON) {
       return JSON.parse(userJSON);
@@ -105,16 +103,22 @@ export class DB {
       throw new DataBaseError(`User "${login}" not found in DB`);
     }
   }
-  updateUser(login: string, user: UnregisteredUser): StoragedUser {
+  updateUser(
+    login: User_DB['login'],
+    user: Partial<UnregisteredUser>
+  ): User_DB {
     const oldUser = this.getUser(login);
-    const updatedUser: StoragedUser = {
+    const updatedUser: User_DB = {
       ...oldUser,
       ...user,
     };
     this.saveUser(updatedUser);
     return updatedUser;
   }
-  changePassword(login: string, newPassword: string): void {
+  changePassword(
+    login: User_DB['login'],
+    newPassword: User_DB['password']
+  ): void {
     const user = this.getUser(login);
     user.password = newPassword;
     this.saveUser(user);
@@ -122,9 +126,9 @@ export class DB {
 
   // Order
   addOrder(
-    login: string,
+    login: User_DB['login'],
     order: UnregisteredOrder
-  ): RegisteredOrder[] {
+  ): RegisteredOrder {
     const user = this.getUser(login);
     const registeredOrder: RegisteredOrder = {
       ...order,
@@ -134,41 +138,40 @@ export class DB {
 
     user.orders.push(registeredOrder);
     this.saveUser(user);
-    return user.orders;
-  }
-  getOrders(login: string): RegisteredOrder[] {
-    return this.getUser(login).orders;
+    return registeredOrder;
   }
 
   // Favorite
   addToFavorite(
-    login: string,
+    login: User_DB['login'],
     productID: Product['id']
-  ): Product['id'][] {
+  ): void {
     const user = this.getUser(login);
-    user.favorites.push(productID);
+    if (!user.favorites.includes(productID)) {
+      user.favorites.push(productID);
+    }
     this.saveUser(user);
-    return user.favorites;
   }
-  getFavorites(login: string): Product['id'][] {
-    return this.getUser(login).favorites;
+  getFavorites(login: User_DB['login']): Product[] {
+    const { favorites } = this.getUser(login);
+    return this.getProductsByIDs(favorites);
   }
   deleteFromFavorite(
-    login: string,
+    login: User_DB['login'],
     productID: Product['id']
-  ): Product['id'][] {
+  ): void {
     const user = this.getUser(login);
     user.favorites = user.favorites.filter((id) => id !== productID);
     this.saveUser(user);
-    return user.favorites;
   }
 
   // Subscribe
-  subscribe(email: string): void {
+  subscribe(email: string): true {
     if (this.subscribeList.includes(email)) {
       throw new DataBaseError(`User ${email} already subscribed`);
     } else {
       this.subscribeList.push(email);
+      return true;
     }
   }
 
