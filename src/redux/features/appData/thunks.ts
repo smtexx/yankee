@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BadResponseError, getUrl } from 'redux/helpers';
-import { mockFetch } from 'server/server';
+import { mockFetch } from 'server/Server';
 import { Category, Product, Path, Feature, AppData } from 'types';
 
 export const fetchProductsByCategory = createAsyncThunk<
