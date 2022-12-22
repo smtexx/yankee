@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BadResponseError, getUrl } from 'redux/helpers';
-import { mockFetch } from 'server/server';
+import { mockFetch } from 'server/Server';
 import {
   AppState,
   ExchangeRate,
@@ -8,8 +8,9 @@ import {
   Path,
   Product,
   RegisteredOrder,
-  RegisteredUser,
+  StatusCode,
   UnregisteredUser,
+  User_Client,
 } from 'types';
 
 async function sendRequest<T, U>(
@@ -27,7 +28,11 @@ async function sendRequest<T, U>(
     body: JSON.stringify(body),
   });
 
-  if (response.ok) {
+  if (response.status === StatusCode.NO_CONTENT) {
+    return {} as U;
+  }
+
+  if (response.ok && response.status === StatusCode.OK) {
     return (await response.json()) as U;
   }
 
@@ -36,7 +41,7 @@ async function sendRequest<T, U>(
 
 export const registerUser = createAsyncThunk<
   {
-    user: RegisteredUser;
+    user: User_Client;
     authData: AppState['authData'];
   },
   {
@@ -54,7 +59,7 @@ export const registerUser = createAsyncThunk<
   );
 
   return {
-    user: registeredUser as RegisteredUser,
+    user: registeredUser as User_Client,
     authData: {
       login,
       password,
@@ -63,7 +68,7 @@ export const registerUser = createAsyncThunk<
 });
 
 export const updateUserData = createAsyncThunk<
-  RegisteredUser,
+  User_Client,
   {
     login: string;
     password: string;
@@ -101,7 +106,7 @@ export const changePassword = createAsyncThunk<
 );
 
 export const signIn = createAsyncThunk<
-  { user: RegisteredUser; authData: AppState['authData'] },
+  { user: User_Client; authData: AppState['authData'] },
   {
     login: string;
     password: string;
@@ -116,7 +121,7 @@ export const signIn = createAsyncThunk<
   );
 
   return {
-    user: registeredUser as RegisteredUser,
+    user: registeredUser as User_Client,
     authData: { login, password },
   };
 });
@@ -139,24 +144,25 @@ export const createOrder = createAsyncThunk<
 });
 
 export const addToFavorites = createAsyncThunk<
-  Product['id'][],
+  Product,
   {
     login: string;
     password: string;
-    productID: string;
+    product: Product;
   }
->('@state/addToFavorites', async ({ login, password, productID }) => {
-  return await sendRequest(
-    getUrl(Path.user, Path.favorites, productID),
+>('@state/addToFavorites', async ({ login, password, product }) => {
+  await sendRequest(
+    getUrl(Path.user, Path.favorites, product.id),
     login,
     password,
     Method.GET,
     {}
   );
+  return product;
 });
 
 export const deleteFromFavorites = createAsyncThunk<
-  Product['id'][],
+  string,
   {
     login: string;
     password: string;
@@ -165,31 +171,17 @@ export const deleteFromFavorites = createAsyncThunk<
 >(
   '@state/deleteFromFavorites',
   async ({ login, password, productID }) => {
-    return await sendRequest(
+    await sendRequest(
       getUrl(Path.user, Path.favorites, productID),
       login,
       password,
       Method.DELETE,
       {}
     );
+
+    return productID;
   }
 );
-
-export const getUserFavorites = createAsyncThunk<
-  Product[],
-  {
-    login: string;
-    password: string;
-  }
->('@state/getUserFavorites', async ({ login, password }) => {
-  return await sendRequest(
-    getUrl(Path.user, Path.favorites),
-    login,
-    password,
-    Method.GET,
-    {}
-  );
-});
 
 export const subscribe = createAsyncThunk<
   {},
@@ -204,14 +196,14 @@ export const subscribe = createAsyncThunk<
   });
 
   if (response.ok) {
-    return await response.json();
+    return {};
   }
 
   throw new BadResponseError(response.status);
 });
 
 export const getExchangeRates = createAsyncThunk(
-  '@state/subscribe',
+  '@state/getExchangeRates',
   async () => {
     const response = await mockFetch(getUrl(Path.exchange));
 

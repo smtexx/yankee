@@ -1,6 +1,6 @@
 import { ExchangeRate } from './DB';
 import { SoldProduct } from './Product';
-import { RegisteredUser } from './User';
+import { User_Client } from './User';
 
 export type Lang = 'EN' | 'RU';
 export type Currency = 'USD' | 'EUR' | 'RUB';
@@ -8,7 +8,7 @@ export type Currency = 'USD' | 'EUR' | 'RUB';
 export interface AppState {
   lang: Lang;
   currency: Currency;
-  user: RegisteredUser | null;
+  user: User_Client | null;
   cart: SoldProduct[];
   authData: {
     login: string;
