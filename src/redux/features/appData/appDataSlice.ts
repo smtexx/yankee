@@ -33,7 +33,7 @@ const appDataSlice = createSlice({
       (state, action) => {
         const products: {
           array: Product[];
-          entries: Record<string, Product>;
+          entries: Record<Product['id'], Product>;
         } = {
           array: action.payload,
           entries: {},
