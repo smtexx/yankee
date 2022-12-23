@@ -1,9 +1,11 @@
-import { productsData } from 'data/products';
 import { AppData } from 'types';
 
 export const initialState: AppData = {
   status: 'IDLE',
-  products: productsData,
+  products: {
+    array: [],
+    entries: {},
+  },
   filters: {
     color: null,
     price: [0, Infinity],
