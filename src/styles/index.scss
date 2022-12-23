@@ -1,1 +1,49 @@
+@import-normalize;
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300&display=swap');
 
+:root {
+  // Colors
+  --message-background-color: #e5e5e589;
+  --color-white: #fff;
+  --color-brown: #e0bea2;
+  --color-brown-dark: #cca88a;
+
+  // Font-family
+  --raleway: 'Raleway', sans-serif;
+
+  // Shadow
+  --box-shadow: 0px 10px 15px #25252531;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--raleway);
+  font-weight: 300;
+}
+
+.button {
+  padding: 1rem 2.438rem;
+  line-height: 1.187rem;
+  font-family: var(--raleway);
+  font-weight: 300;
+  text-transform: uppercase;
+  color: var(--color-white);
+  background-color: var(--color-brown);
+  border: none;
+  transition: box-shadow 0.25s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: var(--box-shadow);
+    }
+  }
+
+  &:active {
+    background-color: var(--color-brown-dark);
+  }
+}
