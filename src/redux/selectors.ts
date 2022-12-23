@@ -89,3 +89,7 @@ export const selectProducts = createSelector(
 // Favorites
 export const selectFavorites = (state: RootState) =>
   state.values.user?.favorites;
+
+// Message
+export const selectMessage = (state: RootState) =>
+  state.values.message;
