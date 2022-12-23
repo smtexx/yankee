@@ -29,7 +29,7 @@ export const selectAllProducts = (state: RootState) =>
 export const selectProductByID = (
   state: RootState,
   id: Product['id']
-) => state.data.products.ids[id];
+) => state.data.products.entries[id];
 
 const selectFilteredProducts = createSelector(
   selectColorFilter,
@@ -86,22 +86,6 @@ export const selectProducts = createSelector(
   }
 );
 
-export const selectFavorites = createSelector(
-  (state: RootState) => state.values.favorite,
-  (state: RootState) => state.data.products.array,
-  (ids, products) =>
-    ids.map((id) => products.find((product) => product.id === id))
-);
-
-// Бестселлеры, распрадажа, новинки
-export const selectBestsellers = createSelector(
-  selectAllProducts,
-  (products) => products.filter((product) => product.bestseller)
-);
-
-export const selectSalesProducts = createSelector(
-  selectAllProducts,
-  (prducts) => prducts.filter((product) => product.inSale)
-);
-
-export const selectNovelties = createSelector(selectAllProducts);
+// Favorites
+export const selectFavorites = (state: RootState) =>
+  state.values.user?.favorites;
