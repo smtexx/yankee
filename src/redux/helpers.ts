@@ -8,3 +8,7 @@ export class BadResponseError extends Error {
     this.name = 'BadResponseError';
   }
 }
+
+export function deepCopy<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj)) as T;
+}
