@@ -87,7 +87,7 @@ export const routes: Routes = {
   },
   cart: {
     path: 'cart',
-    protected: true,
+    protected: false,
     RU: {
       title: 'Корзина покупок',
       description:
@@ -113,8 +113,8 @@ export const routes: Routes = {
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
     },
   },
-  contacts: {
-    path: 'contacts',
+  contact: {
+    path: 'contact',
     protected: false,
     RU: {
       title: 'Контактные данные',
@@ -137,6 +137,20 @@ export const routes: Routes = {
     },
     EN: {
       title: 'Shopping history',
+      description:
+        'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
+    },
+  },
+  user: {
+    path: 'user',
+    protected: true,
+    RU: {
+      title: 'Личный кабинет',
+      description:
+        'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
+    },
+    EN: {
+      title: 'Personal account',
       description:
         'YANKEE - Buy high-quality fashionable clothes from the new collection for every day',
     },
