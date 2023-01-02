@@ -1,0 +1,37 @@
+.langSwitcher {
+  position: relative;
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.lang {
+  padding: 0.1875rem;
+  display: flex;
+  align-items: center;
+}
+
+.indicator {
+  margin-left: 0.3125rem;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease-in-out;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.menu {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  margin: 0;
+  padding: 0.1875rem 0.625rem;
+  border-top: 1px solid var(--color-brown);
+}
