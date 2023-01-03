@@ -5,12 +5,12 @@ import s from './Message.module.scss';
 
 type Props = {
   text: string;
+  lang: string;
 };
 
-export default function Message({ text }: Props) {
+export default function Message({ text, lang }: Props) {
   const dispatch = useDispatch();
 
-  const lang = useSelector(selectLang);
   return (
     <div className={s.message}>
       <p className={s.text}>{text}</p>
