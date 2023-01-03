@@ -1,0 +1,42 @@
+.customSwitcher {
+  position: relative;
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  padding: 0.1875rem 0;
+}
+
+.controlIndicator {
+  display: flex;
+  align-items: center;
+  margin-left: 0.4rem;
+  transition: transform 0.25s ease-in-out;
+}
+
+.indicatorOpen {
+  transform: rotate(180deg);
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.option {
+  padding: 0.1875rem 0.1875rem 0.1875rem 0.8125rem;
+  border-top: 1px solid var(--color-brown);
+}
+
+.optionSelected {
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border-top: none;
+}
