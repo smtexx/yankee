@@ -5,7 +5,7 @@ export const routes: Routes = {
     path: '/',
     protected: false,
     RU: {
-      title: 'YANKEE - купить одежду из новой коллекции',
+      title: 'YANKEE - Купить одежду из новой коллекции',
       description:
         'YANKEE - Покупайте качественную модную одежду из новой коллекции на каждый день',
     },
