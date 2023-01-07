@@ -5,6 +5,19 @@ import { Provider } from 'react-redux';
 import { store } from 'redux/store';
 import App from './App';
 import './styles/index.scss';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
+import PageError from 'components/PageError/PageError';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <PageError />,
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +25,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );
