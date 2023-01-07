@@ -9,7 +9,7 @@ export default function PageHome({ route }: Props) {
   return (
     <>
       <MetaData route={route} />
-      <div className={s.pageHome}>PageHome Component</div>;
+      <div className={s.pageHome}></div>
     </>
   );
 }
