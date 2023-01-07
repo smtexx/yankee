@@ -6,3 +6,4 @@ export * from './AppData';
 export * from './AppState';
 export * from './DB';
 export * from './Server';
+export * from './Translation';
