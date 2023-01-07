@@ -1,7 +1,7 @@
 .customSwitcher {
   position: relative;
-  font-size: 1.125rem;
   cursor: pointer;
+  background-color: var(--color-white);
 }
 
 .control {
@@ -26,6 +26,7 @@
   top: 100%;
   left: 0;
   right: 0;
+  background-color: var(--color-white);
 }
 
 .option {
