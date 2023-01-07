@@ -82,6 +82,7 @@ export default function Menu({ lang }: Props) {
             value={lang}
             handler={(newValue: Lang) => {
               dispatch(setLang(newValue));
+              document.documentElement.lang = newValue.toLowerCase();
             }}
             options={langOptions}
           />
