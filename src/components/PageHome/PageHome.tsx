@@ -1,5 +1,5 @@
 import MetaData from 'components/MetaData/MetaData';
-
+import Poster from 'components/Poster/Poster';
 import { Route } from 'types';
 import s from './PageHome.module.scss';
 
@@ -9,7 +9,7 @@ export default function PageHome({ route }: Props) {
   return (
     <>
       <MetaData route={route} />
-      <div className={s.pageHome}></div>
+      <Poster />
     </>
   );
 }
