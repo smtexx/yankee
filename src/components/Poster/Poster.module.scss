@@ -1,0 +1,36 @@
+.poster {
+  @media screen and (min-width: 992px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+%slide {
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 0;
+}
+
+.slide:nth-of-type(2),
+.slide:nth-of-type(3) {
+  display: none;
+
+  @media screen and (min-width: 992px) {
+    display: block;
+  }
+}
+
+.slide:nth-of-type(1) {
+  @extend %slide;
+  background-image: url('../../../public/images/homepage_slide_1.webp');
+}
+
+.slide:nth-of-type(2) {
+  @extend %slide;
+  background-image: url('../../../public/images/homepage_slide_2.webp');
+}
+.slide:nth-of-type(3) {
+  @extend %slide;
+  background-image: url('../../../public/images/homepage_slide_3.webp');
+}
