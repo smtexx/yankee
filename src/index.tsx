@@ -10,12 +10,17 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import PageError from 'components/PageError/PageError';
+import PageHome from 'components/PageHome/PageHome';
+import { routes } from 'data/routes';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <PageError />,
+    children: [
+      { path: '/', element: <PageHome route={routes.root} /> },
+    ],
   },
 ]);
 
