@@ -1,17 +1,19 @@
-import s from './Menu.module.scss';
 import { ReactComponent as BurgerIcon } from 'svg/burger.svg';
 import { ReactComponent as BasketIcon } from 'svg/basket.svg';
 import { ReactComponent as HeartIcon } from 'svg/heart.svg';
 import { ReactComponent as UserIcon } from 'svg/user.svg';
 import { Currency, Lang, Translation } from 'types';
 import { useDispatch, useSelector } from 'react-redux';
+import CustomSwitcher from 'components/CustomSwitcher/CustomSwitcher';
+import { selectCurrency } from 'redux/selectors';
+import Search from 'components/Search/Search';
+import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import s from './Menu.module.scss';
 import {
   setCurrency,
   setLang,
 } from 'redux/features/appState/appStateSlice';
-import CustomSwitcher from 'components/CustomSwitcher/CustomSwitcher';
-import { selectCurrency } from 'redux/selectors';
-import Search from 'components/Search/Search';
 
 type Props = { lang: Lang };
 type Option<T> = { value: T; label: T };
@@ -59,10 +61,17 @@ const text: Translation<
 export default function Menu({ lang }: Props) {
   const dispatch = useDispatch();
   const currency = useSelector(selectCurrency);
+  const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`${s.menuBar}`}>
-      <button className={s.openButton}>
+    <div
+      className={`${s.menuBar} ${pathname === '/' ? s.homePage : ''}`}
+    >
+      <button
+        className={s.openButton}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <BurgerIcon />
       </button>
 
@@ -112,7 +121,7 @@ export default function Menu({ lang }: Props) {
         </button>
       </div>
 
-      <nav className={s.menu}>
+      <nav className={`${s.menu} ${isOpen ? s.open : ''}`}>
         <ul className={s.menuList}>
           <li className={s.listItem}>
             <div className={s.search}>

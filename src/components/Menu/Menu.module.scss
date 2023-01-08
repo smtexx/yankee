@@ -21,6 +21,7 @@
   padding: 20px;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 
   svg {
     display: block;
@@ -96,6 +97,7 @@
 }
 
 .menu {
+  display: none;
   position: fixed;
   top: 64px;
   left: 0;
@@ -103,6 +105,10 @@
   bottom: 0;
   padding: 0 20px 30px 20px;
   background-color: var(--color-white);
+
+  &.open {
+    display: block;
+  }
 
   @media screen and (min-width: 992px) {
     position: absolute;
@@ -225,9 +231,11 @@
     .menu {
       color: var(--color-white);
       background-color: transparent;
+      box-shadow: none;
     }
     .search {
       input {
+        color: var(--color-white);
         background-color: transparent;
 
         &::placeholder {
