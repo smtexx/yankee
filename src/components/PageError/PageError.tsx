@@ -1,4 +1,4 @@
-import { useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 import { Lang, Translation } from 'types';
 import s from './PageError.module.scss';
 
@@ -11,16 +11,18 @@ export default function PageError({}: Props) {
 
   console.error(error);
 
-  const text: Translation<'header' | 'message'> = {
+  const text: Translation<'header' | 'message' | 'link'> = {
     RU: {
       header: 'Ошибка приложения',
-      message:
-        'Во время работы приложения произошла ошибка. Мы уже работаем над ее устранением. Попробуйте перезагрузить страницу.',
+      message: `Запрашиваемая страница не найдена, возможно в приложении произошла ошибка. 
+         Мы уже работаем над ее устранением. Попробуйте перейти на главную страницу.`,
+      link: 'Перейти на главную страницу',
     },
     EN: {
       header: 'Application Error',
-      message:
-        'An error occurred while the application was running. We are already working on its elimination. Try to reload the page.',
+      message: `Requested page was not found, an error may have occurred in the application. 
+         We are already working on its elimination. Try to go to the main page.`,
+      link: 'Go to the main page',
     },
   };
 
@@ -29,6 +31,9 @@ export default function PageError({}: Props) {
       <div className={s.window}>
         <h1 className={s.header}>{text[lang].header}</h1>
         <p className={s.message}>{text[lang].message}</p>
+        <Link to="/" className="link">
+          {text[lang].link}
+        </Link>
       </div>
     </div>
   );
