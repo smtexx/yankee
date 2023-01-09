@@ -12,14 +12,19 @@ import {
 import PageError from 'components/PageError/PageError';
 import PageHome from 'components/PageHome/PageHome';
 import { routes } from 'data/routes';
+import PageCatalog from 'components/PageCatalog/PageCatalog';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: routes.root.path,
     element: <App />,
     errorElement: <PageError />,
     children: [
-      { path: '/', element: <PageHome route={routes.root} /> },
+      { path: '', element: <PageHome route={routes.root} /> },
+      {
+        path: routes.category.path,
+        element: <PageCatalog route={routes.category} />,
+      },
     ],
   },
 ]);
