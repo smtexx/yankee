@@ -1,7 +1,8 @@
 .customSwitcher {
   position: relative;
-  cursor: pointer;
+  padding: 0 5px;
   background-color: var(--color-white);
+  cursor: pointer;
 }
 
 .control {
@@ -27,6 +28,7 @@
   left: 0;
   right: 0;
   background-color: var(--color-white);
+  z-index: 10;
 }
 
 .option {
