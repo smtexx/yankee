@@ -2,13 +2,13 @@ import { Lang } from './AppState';
 
 interface Meta {
   title: string;
+  name: string;
   description: string;
 }
 
 export type Route = {
   path: string;
   protected: boolean;
-  child?: Route;
 } & {
   [key in Lang]: Meta;
 };
