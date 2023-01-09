@@ -7,7 +7,7 @@ import CustomSwitcher from 'components/CustomSwitcher/CustomSwitcher';
 import { selectCurrency } from 'redux/selectors';
 import Search from 'components/Search/Search';
 import { useLocation } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import s from './Menu.module.scss';
 import {
   setCurrency,
@@ -65,6 +65,18 @@ export default function Menu({ lang }: Props) {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
+
+  useEffect(() => {
+    const viewportWidth = document.documentElement.clientWidth;
+    if (isOpen && viewportWidth < 992) {
+      const bodyWidth = document.body.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.width = `${bodyWidth}px`;
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.width = '';
+    }
+  }, [isOpen]);
 
   return (
     <header
