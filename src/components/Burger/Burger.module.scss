@@ -1,0 +1,58 @@
+.button {
+  padding: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.figure {
+  position: relative;
+  display: block;
+  width: 34px;
+  height: 23px;
+}
+
+.bar {
+  display: block;
+  height: 3px;
+  background-color: var(--color-brown);
+  transition: 0.3s cubic-bezier(0.75, -0.55, 0.25, 1.55);
+
+  & + .bar {
+    margin-top: 7px;
+  }
+
+  &:nth-child(1) {
+    width: 34px;
+  }
+
+  &:nth-child(2) {
+    width: 26px;
+  }
+
+  &:nth-child(3) {
+    width: 18px;
+  }
+}
+
+.open {
+  .bar {
+    position: absolute;
+
+    &:nth-child(1) {
+      top: 0;
+      transform: rotate(45deg) translateY(11px) translateX(3px);
+    }
+
+    &:nth-child(2) {
+      top: 3px;
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      bottom: 0;
+      width: 34px;
+      transform: rotate(-45deg) translateY(-11px) translateX(3px);
+    }
+  }
+}
