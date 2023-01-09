@@ -1,4 +1,3 @@
-import { ReactComponent as BurgerIcon } from 'svg/burger.svg';
 import { ReactComponent as BasketIcon } from 'svg/basket.svg';
 import { ReactComponent as HeartIcon } from 'svg/heart.svg';
 import { ReactComponent as UserIcon } from 'svg/user.svg';
@@ -8,12 +7,14 @@ import CustomSwitcher from 'components/CustomSwitcher/CustomSwitcher';
 import { selectCurrency } from 'redux/selectors';
 import Search from 'components/Search/Search';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import s from './Menu.module.scss';
 import {
   setCurrency,
   setLang,
 } from 'redux/features/appState/appStateSlice';
+import { CSSTransition } from 'react-transition-group';
+import Burger from 'components/Burger/Burger';
 
 type Props = { lang: Lang };
 type Option<T> = { value: T; label: T };
@@ -63,18 +64,15 @@ export default function Menu({ lang }: Props) {
   const currency = useSelector(selectCurrency);
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
 
   return (
-    <div
+    <header
       className={`${s.menuBar} ${pathname === '/' ? s.homePage : ''}`}
     >
-      <button
-        className={s.openButton}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <BurgerIcon />
-      </button>
-
+      <div className={s.openButton}>
+        <Burger handler={(val) => setIsOpen(val)} />
+      </div>
       <nav className={s.navigation}>
         <ul className={s.navigationList}>
           <li className={s.navigationListItem}>{text[lang].new}</li>
@@ -106,9 +104,7 @@ export default function Menu({ lang }: Props) {
           />
         </li>
       </ul>
-
       <h2 className={s.logo}>yankee</h2>
-
       <div className={s.controls}>
         <button className={s.controlsButton}>
           <UserIcon />
@@ -120,35 +116,43 @@ export default function Menu({ lang }: Props) {
           <BasketIcon />
         </button>
       </div>
-
-      <nav className={`${s.menu} ${isOpen ? s.open : ''}`}>
-        <ul className={s.menuList}>
-          <li className={s.listItem}>
-            <div className={s.search}>
-              <Search lang={lang} />
-            </div>
-            <div className={s.currencyMobile}>
-              <CustomSwitcher
-                value={currency}
-                options={currencyOptions}
-                handler={(newCurrency: Currency) =>
-                  dispatch(setCurrency(newCurrency))
-                }
-              />
-            </div>
-          </li>
-          <li className={s.listItem}>
-            <UserIcon />
-            {` ${text[lang].account}`}
-          </li>
-          <li className={s.listItem}>{text[lang].new}</li>
-          <li className={s.listItem}>{text[lang].catalog}</li>
-          <li className={s.listItem}>{text[lang].about}</li>
-          <li className={s.listItem}>{text[lang].refund}</li>
-          <li className={s.listItem}>{text[lang].shipping}</li>
-          <li className={s.listItem}>{text[lang].contacts}</li>
-        </ul>
-      </nav>
-    </div>
+      <CSSTransition
+        nodeRef={menuRef}
+        in={isOpen}
+        classNames="Menu"
+        timeout={200}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <nav className={s.menu} ref={menuRef}>
+          <ul className={s.menuList}>
+            <li className={s.listItem}>
+              <div className={s.search}>
+                <Search lang={lang} />
+              </div>
+              <div className={s.currencyMobile}>
+                <CustomSwitcher
+                  value={currency}
+                  options={currencyOptions}
+                  handler={(newCurrency: Currency) =>
+                    dispatch(setCurrency(newCurrency))
+                  }
+                />
+              </div>
+            </li>
+            <li className={s.listItem}>
+              <UserIcon />
+              {` ${text[lang].account}`}
+            </li>
+            <li className={s.listItem}>{text[lang].new}</li>
+            <li className={s.listItem}>{text[lang].catalog}</li>
+            <li className={s.listItem}>{text[lang].about}</li>
+            <li className={s.listItem}>{text[lang].refund}</li>
+            <li className={s.listItem}>{text[lang].shipping}</li>
+            <li className={s.listItem}>{text[lang].contacts}</li>
+          </ul>
+        </nav>
+      </CSSTransition>
+    </header>
   );
 }

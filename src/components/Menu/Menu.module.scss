@@ -17,17 +17,6 @@
   }
 }
 
-.openButton {
-  padding: 20px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-
-  svg {
-    display: block;
-  }
-}
-
 .switchers {
   display: flex;
   gap: 1.5rem;
@@ -97,18 +86,13 @@
 }
 
 .menu {
-  display: none;
   position: fixed;
-  top: 64px;
+  top: 70px;
   left: 0;
   right: 0;
   bottom: 0;
   padding: 0 20px 30px 20px;
   background-color: var(--color-white);
-
-  &.open {
-    display: block;
-  }
 
   @media screen and (min-width: 992px) {
     position: absolute;
@@ -148,6 +132,7 @@
   &:first-child {
     @extend %flex;
     justify-content: space-between;
+    border-bottom: none;
   }
 
   &:nth-child(2) {
@@ -208,8 +193,8 @@
     color: var(--color-white);
   }
 
-  .openButton rect {
-    fill: var(--color-white);
+  .openButton span span {
+    background-color: var(--color-white);
   }
   .switchers {
     div {
@@ -250,4 +235,21 @@
       }
     }
   }
+}
+
+// Animation
+:global(.Menu-enter) {
+  opacity: 0;
+}
+
+:global(.Menu-enter-active) {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+}
+:global(.Menu-exit) {
+  opacity: 1;
+}
+:global(.Menu-exit-active) {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
 }
